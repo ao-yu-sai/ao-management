@@ -1,6 +1,7 @@
 package com.ai_offshore.tools.web.wbs.project.mapper;
 
 import java.util.List;
+import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.ai_offshore.tools.web.wbs.project.mapper.model.Project;
@@ -16,7 +17,7 @@ public interface ProjectMapper {
     /**
      * チケット番号で案件を取得
      */
-    Project selectByTicketNumber(String ticketNumber);
+    Optional<Project> selectByTicketNumber(String ticketNumber);
     
     /**
      * 全案件を取得

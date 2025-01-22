@@ -37,7 +37,8 @@ public class ProjectService {
      * チケット番号で案件を取得
      */
     public Project findByTicketNumber(String ticketNumber) {
-        return projectMapper.selectByTicketNumber(ticketNumber);
+        return projectMapper.selectByTicketNumber(ticketNumber)
+            .orElse(null);
     }
 
     /**
@@ -52,7 +53,20 @@ public class ProjectService {
      */
     @Transactional
     public void update(Project project) {
-        projectMapper.update(project);
+        // 既存の案件を取得
+        Project existingProject = projectMapper.selectByTicketNumber(project.getTicketNumber())
+            .orElseThrow(() -> new RuntimeException("案件が見つかりません"));
+        
+        // 更新対象のフィールドを設定
+        existingProject.setProjectName(project.getProjectName());
+        existingProject.setServiceKbnCode(project.getServiceKbnCode());
+        existingProject.setStatus(project.getStatus());
+        existingProject.setPriority(project.getPriority());
+        existingProject.setProgressRate(project.getProgressRate());
+        existingProject.setDescription(project.getDescription());
+        
+        // 更新を実行
+        projectMapper.update(existingProject);
     }
 
     /**

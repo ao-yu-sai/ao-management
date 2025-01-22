@@ -2,8 +2,10 @@ package com.ai_offshore.tools.web.wbs.common.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -35,9 +37,10 @@ public class GlobalExceptionHandler {
      * システム例外のハンドリング
      */
     @ExceptionHandler(Exception.class)
-    public RedirectView handleException(Exception e, RedirectAttributes redirectAttributes) {
+    @ResponseBody
+    public ResponseEntity<String> handleRestException(Exception e) {
         log.error("予期せぬエラーが発生しました", e);
-        redirectAttributes.addFlashAttribute("errorMessage", "システムエラーが発生しました");
-        return new RedirectView("/error");
+        return ResponseEntity.internalServerError()
+            .body("処理に失敗しました: " + e.getMessage());
     }
 } 

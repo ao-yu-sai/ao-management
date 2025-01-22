@@ -107,4 +107,28 @@ public class ProjectController {
         model.addAttribute("projectName", projectName);
         return "project/list";
     }
+
+    /**
+     * 案件を編集
+     */
+    @PostMapping("/edit")
+    public String edit(@ModelAttribute Project project, RedirectAttributes redirectAttributes) {
+        try {
+            projectService.update(project);  // 更新処理を実行
+            redirectAttributes.addFlashAttribute("successMessage", "案件を更新しました");
+            return "redirect:/project/list";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "案件の更新に失敗しました: " + e.getMessage());
+            return "redirect:/project/regist?ticketNumber=" + project.getTicketNumber();
+        }
+    }
+
+    /**
+     * 案件を削除
+     */
+    @PostMapping("delete/{ticketNumber}")
+    @ResponseBody
+    public void delete(@PathVariable String ticketNumber) {
+        projectService.delete(ticketNumber);
+    }
 } 

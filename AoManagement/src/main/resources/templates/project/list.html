@@ -27,8 +27,14 @@
 
     <section class="content">
       <div class="container-fluid">
-        <!-- 成功メッセージ -->
-        <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+        <!-- メッセージ表示領域 -->
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="successMessage" style="display: none;">
+          <i class="fas fa-check-circle"></i>
+          <span id="successMessageText"></span>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
 
         <div class="card">
           <div class="card-header">
@@ -95,7 +101,7 @@
                       </div>
                     </td>
                     <td>
-                      <a th:href="@{/project/edit/{ticketNumber}(ticketNumber=${project.ticketNumber})}"
+                      <a th:href="@{/project/regist(ticketNumber=${project.ticketNumber})}"
                         class="btn btn-info btn-sm">
                         <i class="fas fa-edit"></i> 編集
                       </a>
@@ -113,6 +119,32 @@
         </div>
       </div>
     </section>
+
+    <!-- 削除確認モーダル -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">案件削除確認</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>この案件を削除してよろしいですか？</p>
+            <p class="text-danger">この操作は取り消せません。</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              <i class="fas fa-times"></i> キャンセル
+            </button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+              <i class="fas fa-trash"></i> 削除
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <th:block layout:fragment="script">

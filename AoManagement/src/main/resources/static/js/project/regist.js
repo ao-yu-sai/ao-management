@@ -1,4 +1,53 @@
 $(document).ready(function () {
+  // URLパラメータからチケット番号を取得
+  const urlParams = new URLSearchParams(window.location.search);
+  const ticketNumber = urlParams.get('ticketNumber');
+
+  // 編集モードの場合、チケット情報を取得して表示
+  if (ticketNumber) {
+    $('#ticketNumber').val(ticketNumber);
+    $('#ticketNumber').prop('readonly', true);  // 編集不可に設定
+    
+    // チケット情報を取得
+    $.get('/project/ticket/' + ticketNumber)
+      .done(function(response) {
+        if (response && response.issue) {
+          // 案件名を設定
+          $('#projectName').val(response.issue.subject);
+          
+          // 説明を設定
+          $('#description').val(response.issue.description);
+          
+          // 進捗率を設定
+          if (response.issue.doneRatio !== undefined) {
+            $('#progressRate').val(response.issue.doneRatio);
+          }
+          
+          // ステータスを設定
+          if (response.issue.status && response.issue.status.name) {
+            $('#status option').each(function() {
+              if ($(this).text() === response.issue.status.name) {
+                $('#status').val($(this).val());
+              }
+            });
+          }
+          
+          // 優先度を設定
+          if (response.issue.priority && response.issue.priority.name) {
+            $('#priority option').each(function() {
+              if ($(this).text() === response.issue.priority.name) {
+                $('#priority').val($(this).val());
+              }
+            });
+          }
+        }
+      })
+      .fail(function(xhr) {
+        console.error('Error fetching ticket:', xhr);
+        toastr.error('チケット情報の取得に失敗しました');
+      });
+  }
+
   // 進捗率の入力制限
   $('#progressRate').on('input', function() {
     var value = $(this).val();

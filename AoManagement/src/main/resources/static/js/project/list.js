@@ -1,24 +1,41 @@
-// 案件削除の確認ダイアログを表示
+// 削除対象のチケット番号を保持する変数
+let targetTicketNumber;
+
+// 削除ボタンクリック時の処理
 function deleteProject(ticketNumber) {
-  if (confirm('案件を削除してもよろしいですか？')) {
-    // 削除処理を実行
-    fetch(`/project/delete/${ticketNumber}`, {
+  targetTicketNumber = ticketNumber;
+  $('#deleteConfirmModal').modal('show');
+}
+
+// 削除確認ボタンクリック時の処理
+$(document).ready(function() {
+  $('#confirmDeleteBtn').on('click', function() {
+    if (!targetTicketNumber) return;
+
+    // 削除APIを呼び出し
+    $.ajax({
+      url: '/project/delete/' + targetTicketNumber,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
+      },
+      success: function() {
+        // 成功時の処理
+        // メッセージを表示
+        $('#successMessageText').text('案件を削除しました');
+        $('#successMessage').fadeIn();
+        // モーダルを閉じる
+        $('#deleteConfirmModal').modal('hide');
+        // 画面をリロード
+        setTimeout(function() {
+          location.reload();
+        }, 1000);
+      },
+      error: function(xhr) {
+        // エラー時の処理
+        toastr.error('案件の削除に失敗しました');
+        console.error('Error deleting project:', xhr);
       }
-    })
-    .then(response => {
-      if (response.ok) {
-        // 削除成功時は画面をリロード
-        location.reload();
-      } else {
-        throw new Error('削除に失敗しました');
-      }
-    })
-    .catch(error => {
-      alert('削除処理に失敗しました');
-      console.error('Error:', error);
     });
-  }
-} 
+  });
+}); 

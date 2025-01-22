@@ -13,12 +13,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>案件登録</h1>
+            <h1 th:text="${param.ticketNumber != null ? '案件編集' : '案件登録'}">案件登録</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/project/list">案件一覧</a></li>
-              <li class="breadcrumb-item active">案件登録</li>
+              <li class="breadcrumb-item active" th:text="${param.ticketNumber != null ? '案件編集' : '案件登録'}">案件登録</li>
             </ol>
           </div>
         </div>
@@ -34,7 +34,8 @@
           <div class="card-header">
             <h3 class="card-title">案件情報</h3>
           </div>
-          <form id="projectForm" th:action="@{/project/regist}" method="post" th:object="${project}">
+          <form id="projectForm" th:action="${param.ticketNumber != null ? '/project/edit' : '/project/regist'}" 
+            method="post" th:object="${project}">
             <div class="card-body">
               <div class="row">
                 <!-- サービス区分 -->
@@ -135,8 +136,13 @@
             </div>
 
             <div class="card-footer">
-              <button type="submit" class="btn btn-primary btn-regist">登録</button>
-              <a href="/project/list" class="btn btn-secondary">キャンセル</a>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                <span th:text="${param.ticketNumber != null ? '保存' : '登録'}">登録</span>
+              </button>
+              <a href="/project/list" class="btn btn-secondary">
+                <i class="fas fa-times"></i> キャンセル
+              </a>
             </div>
           </form>
         </div>
