@@ -50,4 +50,10 @@ textarea.form-control {
   margin-top: 0.25rem;
   font-size: 0.875rem;
   color: #dc3545;
+}
+
+/* 登録ボタンのスタイル */
+.btn-regist {
+  padding-left: 40px;
+  padding-right: 40px;
 } 

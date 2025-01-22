@@ -1,4 +1,11 @@
 $(document).ready(function () {
+  // 進捗率の入力制限
+  $('#progressRate').on('input', function() {
+    var value = $(this).val();
+    if (value < 0) $(this).val(0);
+    if (value > 100) $(this).val(100);
+  });
+
   // チケット番号入力フィールドのフォーカスアウトイベント
   $('#ticketNumber').blur(function() {
     var ticketNumber = $(this).val();

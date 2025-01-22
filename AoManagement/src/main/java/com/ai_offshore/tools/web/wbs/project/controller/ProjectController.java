@@ -66,16 +66,9 @@ public class ProjectController {
      */
     @PostMapping("/regist")
     public String register(@ModelAttribute Project project, RedirectAttributes redirectAttributes) {
-        try {
-            projectService.create(project);
-            redirectAttributes.addFlashAttribute("successMessage", "案件を登録しました");
-            return "redirect:/project/list";
-        } catch (Exception e) {
-            log.error("案件登録に失敗しました", e);
-            redirectAttributes.addFlashAttribute("errorMessage", "案件登録に失敗しました");
-            redirectAttributes.addFlashAttribute("project", project);
-            return "redirect:/project/regist";
-        }
+        projectService.create(project);
+        redirectAttributes.addFlashAttribute("successMessage", "案件を登録しました");
+        return "redirect:/project/regist";
     }
 
     /**

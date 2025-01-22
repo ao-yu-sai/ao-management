@@ -59,7 +59,7 @@
                   </div>
                 </div>
 
-                <div class="col-12">
+                <div class="col-6">
                   <div class="row">
                     <!-- サービス区分 -->
                     <div class="col-md-3">
@@ -76,7 +76,7 @@
                     </div>
 
                     <!-- ステータス -->
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                       <div class="form-group">
                         <label for="status">ステータス <span class="text-danger">*</span></label>
                         <select class="form-control" id="status" name="status" th:field="*{status}" required>
@@ -89,7 +89,7 @@
                     </div>
 
                     <!-- 優先度 -->
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                       <div class="form-group">
                         <label for="priority">優先度 <span class="text-danger">*</span></label>
                         <select class="form-control" id="priority" name="priority" th:field="*{priority}" required>
@@ -101,11 +101,16 @@
                     </div>
 
                     <!-- 進捗率 -->
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                       <div class="form-group">
                         <label for="progressRate">進捗率</label>
-                        <input type="number" class="form-control" id="progressRate" name="progressRate"
-                          th:field="*{progressRate}" min="0" max="100" value="0">
+                        <div class="input-group">
+                          <input type="number" class="form-control" id="progressRate" name="progressRate"
+                            th:field="*{progressRate}" min="0" max="100" value="0">
+                          <div class="input-group-append">
+                            <span class="input-group-text">%</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -116,14 +121,14 @@
                   <div class="form-group">
                     <label for="description">説明</label>
                     <textarea class="form-control" id="description" name="description" th:field="*{description}"
-                      rows="3"></textarea>
+                      rows="13"></textarea>
                   </div>
                 </div>
               </div>
             </div>
 
             <div class="card-footer">
-              <button type="submit" class="btn btn-primary">登録</button>
+              <button type="submit" class="btn btn-primary btn-regist">登録</button>
               <a href="/project/list" class="btn btn-secondary">キャンセル</a>
             </div>
           </form>

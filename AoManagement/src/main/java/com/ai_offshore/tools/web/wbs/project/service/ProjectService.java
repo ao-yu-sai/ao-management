@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ai_offshore.tools.web.wbs.project.mapper.ProjectMapper;
 import com.ai_offshore.tools.web.wbs.project.mapper.model.Project;
+import com.ai_offshore.tools.web.wbs.common.exception.BusinessException;
 
 @Service
 public class ProjectService {
@@ -22,8 +23,12 @@ public class ProjectService {
      */
     @Transactional
     public void create(Project project) {
-        if (projectMapper.existsByTicketNumber(project.getTicketNumber())) {
-            throw new IllegalArgumentException("チケット番号が重複しています");
+        if (existsByTicketNumber(project.getTicketNumber())) {
+            throw new BusinessException(
+                "チケット番号 " + project.getTicketNumber() + " は既に登録されています",
+                project,
+                "/project/regist"
+            );
         }
         projectMapper.insert(project);
     }
@@ -56,5 +61,15 @@ public class ProjectService {
     @Transactional
     public void delete(String ticketNumber) {
         projectMapper.delete(ticketNumber);
+    }
+
+    /**
+     * チケット番号の重複チェック
+     * 
+     * @param ticketNumber チケット番号
+     * @return 存在する場合はtrue
+     */
+    public boolean existsByTicketNumber(String ticketNumber) {
+        return projectMapper.existsByTicketNumber(ticketNumber);
     }
 } 
