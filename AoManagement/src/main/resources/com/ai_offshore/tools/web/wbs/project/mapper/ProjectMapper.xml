@@ -9,7 +9,9 @@
         <result column="service_kbn_code" property="serviceKbnCode" />
         <result column="service_kbn_name" property="serviceKbnName" />
         <result column="status" property="status" />
+        <result column="status_name" property="statusName" />
         <result column="priority" property="priority" />
+        <result column="priority_name" property="priorityName" />
         <result column="progress_rate" property="progressRate" />
         <result column="is_active" property="isActive" />
         <result column="created_at" property="createdAt" />
@@ -57,14 +59,33 @@
     </select>
 
     <select id="selectByProjectName" resultMap="ProjectResultMap">
-        SELECT 
-            p.*,
-            c.category_name as service_kbn_name
-        FROM 
-            project p
-            LEFT JOIN category c ON p.service_kbn_code = c.category_code 
-                AND c.category_type_code = 'SERVICE_KBN'
-                AND c.is_active = true
+        SELECT
+            p.project_id
+            , p.ticket_number
+            , p.project_name
+            , p.description
+            , p.service_kbn_code
+            , c.category_name service_kbn_name
+            , p.status
+            , c1.category_name status_name
+            , p.priority
+            , c2.category_name priority_name
+            , p.progress_rate
+            , p.is_active 
+        FROM
+            project p 
+            LEFT JOIN category c 
+                ON p.service_kbn_code = c.category_code 
+                AND c.category_type_code = 'SERVICE_KBN' 
+                AND c.is_active = TRUE 
+            LEFT JOIN category c1 
+                ON p.status = c1.category_code 
+                AND c1.category_type_code = 'STATUS_REDMINE_KBN' 
+                AND c1.is_active = TRUE 
+            LEFT JOIN category c2 
+                ON p.priority = c2.category_code 
+                AND c2.category_type_code = 'PRIORITY_KBN' 
+                AND c2.is_active = TRUE 
         WHERE 
             p.is_active = true
             <if test="projectName != null and projectName != ''">

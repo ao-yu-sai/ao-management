@@ -81,7 +81,7 @@
                          project.status == '進行中' ? 'badge-primary' :
                          project.status == '完了' ? 'badge-success' :
                          'badge-warning')}"
-                        th:text="${project.status}">
+                        th:text="${project.statusName}">
                       </span>
                     </td>
                     <td>
@@ -89,7 +89,7 @@
                         (project.priority == '高' ? 'badge-danger' :
                          project.priority == '中' ? 'badge-warning' :
                          'badge-info')}"
-                        th:text="${project.priority}">
+                        th:text="${project.priorityName}">
                       </span>
                     </td>
                     <td>
