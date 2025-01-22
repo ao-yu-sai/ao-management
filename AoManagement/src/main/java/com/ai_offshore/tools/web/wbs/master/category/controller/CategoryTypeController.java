@@ -140,4 +140,19 @@ public class CategoryTypeController {
         categoryService.delete(typeCode, code);
         return "success";
     }
+
+    /**
+     * ★区分を更新（API）
+     * POST /master/category/{typeCode}/categories/{code}
+     */
+    @PostMapping("/{typeCode}/categories/{code}")
+    @ResponseBody
+    public String updateCategory(
+            @PathVariable("typeCode") String categoryTypeCode,
+            @PathVariable("code") String code,
+            @ModelAttribute Category category) {
+        category.setCategoryTypeCode(categoryTypeCode);
+        categoryService.update(category);
+        return "success";
+    }
 }

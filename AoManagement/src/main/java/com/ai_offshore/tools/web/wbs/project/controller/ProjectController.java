@@ -1,6 +1,8 @@
 package com.ai_offshore.tools.web.wbs.project.controller;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -46,8 +49,16 @@ public class ProjectController {
      */
     @GetMapping("/regist")
     public String showRegistForm(Model model) {
+        // ステータス一覧を取得
+        List<Category> statusCategories = categoryService.findByCategoryTypeCode("STATUS_REDMINE_KBN");
+        model.addAttribute("statusList", statusCategories);
+        
         // サービス区分の選択肢を取得
         List<Category> serviceCategories = categoryService.findByCategoryTypeCode("SERVICE_KBN");
+        
+        // 優先度一覧を取得
+        List<Category> priorityCategories = categoryService.findByCategoryTypeCode("PRIORITY_KBN");
+        model.addAttribute("priorityList", priorityCategories);
         
         if (!model.containsAttribute("project")) {
             Project project = new Project();
@@ -84,5 +95,16 @@ public class ProjectController {
             log.error("チケット情報の取得に失敗しました: {}", e.getMessage());
             return ResponseEntity.notFound().build();
         }
+    }
+
+    /**
+     * 案件一覧画面を表示
+     */
+    @GetMapping("/list")
+    public String showList(@RequestParam(required = false) String projectName, Model model) {
+        List<Project> projects = projectService.findByProjectName(projectName);
+        model.addAttribute("projects", projects);
+        model.addAttribute("projectName", projectName);
+        return "project/list";
     }
 } 

@@ -20,7 +20,7 @@
           <td th:text="${category.description}"></td>
           <td th:text="${category.displayOrder}"></td>
           <td>
-            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#categoryModal"
+            <button type="button" class="btn btn-info btn-sm category-edit-btn" 
               th:data-category-code="${category.categoryCode}" th:data-category-name="${category.categoryName}"
               th:data-description="${category.description}" th:data-display-order="${category.displayOrder}">
               <i class="fas fa-edit"></i> 編集

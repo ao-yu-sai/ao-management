@@ -7,6 +7,7 @@
         <result column="project_name" property="projectName" />
         <result column="description" property="description" />
         <result column="service_kbn_code" property="serviceKbnCode" />
+        <result column="service_kbn_name" property="serviceKbnName" />
         <result column="status" property="status" />
         <result column="priority" property="priority" />
         <result column="progress_rate" property="progressRate" />
@@ -43,10 +44,22 @@
         AND is_active = true
     </select>
 
-    <select id="selectAll" resultMap="ProjectResultMap">
-        SELECT * FROM project
-        WHERE is_active = true
-        ORDER BY created_at DESC
+    <select id="selectByProjectName" resultMap="ProjectResultMap">
+        SELECT 
+            p.*,
+            c.category_name as service_kbn_name
+        FROM 
+            project p
+            LEFT JOIN category c ON p.service_kbn_code = c.category_code 
+                AND c.category_type_code = 'SERVICE_KBN'
+                AND c.is_active = true
+        WHERE 
+            p.is_active = true
+            <if test="projectName != null and projectName != ''">
+            AND p.project_name LIKE CONCAT('%', #{projectName}, '%')
+            </if>
+        ORDER BY 
+            p.created_at DESC
     </select>
 
     <update id="update" parameterType="com.ai_offshore.tools.web.wbs.project.mapper.model.Project">

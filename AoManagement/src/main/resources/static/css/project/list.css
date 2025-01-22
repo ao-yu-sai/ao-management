@@ -1,0 +1,43 @@
+/* テーブルのスタイル */
+.table {
+  margin-bottom: 0;
+}
+
+/* 進捗バーのスタイル */
+.progress {
+  margin-bottom: 0;
+  background-color: #e9ecef;
+}
+
+.progress-bar {
+  background-color: #007bff;
+}
+
+/* バッジのスタイル */
+.badge {
+  font-size: 0.9rem;
+  padding: 0.4em 0.6em;
+}
+
+/* 操作ボタンのスタイル */
+.btn-sm {
+  margin-right: 0.25rem;
+}
+
+.btn-sm:last-child {
+  margin-right: 0;
+}
+
+/* カードヘッダーの新規登録ボタン */
+.card-tools .btn {
+  margin-left: 0.5rem;
+}
+
+/* 検索フォームのスタイル */
+.form-inline {
+  margin-right: 1rem;
+}
+
+.input-group {
+  width: 200px;
+} 

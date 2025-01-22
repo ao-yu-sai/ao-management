@@ -12,6 +12,7 @@ $(document).ready(function() {
         $('#categoryList').html(data);
         $('#categoryList').removeClass('p-3');
         initializeDeleteButtons();
+        initializeEditButtons();
       }).fail(function(xhr) {
         console.error('Error loading categories:', xhr);
         toastr.error('区分一覧の取得に失敗しました');
@@ -23,7 +24,7 @@ $(document).ready(function() {
     }
   }
 
-  // 行クリック時の処理
+  // 区分種別行クリック時の処理
   $('.clickable-row').click(function() {
     $('.clickable-row').removeClass('selected');
     $(this).addClass('selected');
@@ -82,34 +83,55 @@ $(document).ready(function() {
   $('#deleteCategoryModal').on('hidden.bs.modal', function() {
     categoryToDelete = null;
   });
+  
+  // 区分登録モーダルを表示
+  function showRegistModal(categoryTypeCode) {
+    // モーダルのタイトルを設定
+    $('#categoryModal .modal-title').text('区分登録');
+    
+    // フォームの値をクリア
+    $('#categoryId').val('');
+    $('#originalCategoryCode').val('');
+    $('#categoryCode').val('');
+    $('#categoryName').val('');
+    $('#description').val('');
+    $('#displayOrder').val(0);
+    
+    // フォームのアクションを設定
+    $('#categoryForm').attr('action', `/master/category/${categoryTypeCode}/regist`);
+    $('#categoryForm').attr('method', 'post');
+    
+    // モーダルを表示
+    $('#categoryModal').modal('show');
+  }
 
   // フォーム送信処理
   $('#categoryForm').submit(function(e) {
     e.preventDefault();
     var form = $(this);
     var formData = form.serialize();
+    var isEdit = $('#categoryModal .modal-title').text() === '区分編集';
 
-    // 編集モードの場合のみ、元の区分コードを追加
-    if ($('#categoryModal .modal-title').text() === '区分編集') {
-      // 現在の区分コードと元の区分コードが異なる場合のみ更新用のパラメータを追加
-      var currentCode = $('#categoryCode').val();
-      var originalCode = $('#originalCategoryCode').val();
-      if (currentCode !== originalCode) {
-        formData += '&newCategoryCode=' + currentCode;
-        formData += '&categoryCode=' + originalCode;
-      }
-    }
+    // APIエンドポイントの設定
+    var url = isEdit 
+      ? `/master/category/${selectedTypeCode}/categories/${$('#originalCategoryCode').val()}`
+      : `/master/category/${selectedTypeCode}/categories`;
 
-    $.post(form.attr('action'), formData)
-      .done(function() {
+    // 送信処理
+    $.ajax({
+      url: url,
+      type: 'POST',
+      data: formData,
+      success: function() {
         $('#categoryModal').modal('hide');
         loadCategories(selectedTypeCode);
         toastr.success('保存しました');
-      })
-      .fail(function(xhr) {
+      },
+      error: function(xhr) {
         console.error('Error:', xhr);
         toastr.error('保存に失敗しました');
-      });
+      }
+    });
   });
 
   // 初期表示時に選択されている行があれば区分一覧を読み込む
@@ -174,4 +196,31 @@ $(document).ready(function() {
   $('#deleteCategoryTypeModal').on('hidden.bs.modal', function() {
     categoryTypeToDelete = null;
   });
+
+  // 区分編集ボタンのクリックハンドラを初期化する関数
+  function initializeEditButtons() {
+    $('.category-edit-btn').click(function() {
+      var modal = $('#categoryModal');
+      var button = $(this);
+      
+      // データ属性から値を取得
+      var categoryCode = button.data('category-code');
+      var categoryName = button.data('category-name');
+      var description = button.data('description');
+      var displayOrder = button.data('display-order');
+      
+      // モーダルのフォームに値をセット
+      modal.find('#categoryCode').val(categoryCode);
+      modal.find('#originalCategoryCode').val(categoryCode);
+      modal.find('#categoryName').val(categoryName);
+      modal.find('#description').val(description);
+      modal.find('#displayOrder').val(displayOrder);
+      
+      // モーダルのタイトルを設定
+      modal.find('.modal-title').text('区分編集');
+      
+      // モーダルを表示
+      modal.modal('show');
+    });
+  }
 });

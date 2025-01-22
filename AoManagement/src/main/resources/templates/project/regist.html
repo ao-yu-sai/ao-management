@@ -79,11 +79,13 @@
                     <div class="col-md-2">
                       <div class="form-group">
                         <label for="status">ステータス <span class="text-danger">*</span></label>
-                        <select class="form-control" id="status" name="status" th:field="*{status}" required>
-                          <option value="未着手">未着手</option>
-                          <option value="進行中">進行中</option>
-                          <option value="完了">完了</option>
-                          <option value="保留">保留</option>
+                        <select class="form-control" id="status" name="status" required>
+                          <option value="">選択してください</option>
+                          <option th:each="status,stat : ${statusList}" 
+                                  th:value="${status.categoryCode}" 
+                                  th:text="${status.categoryName}"
+                                  th:selected="${stat.first}">
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -92,10 +94,13 @@
                     <div class="col-md-2">
                       <div class="form-group">
                         <label for="priority">優先度 <span class="text-danger">*</span></label>
-                        <select class="form-control" id="priority" name="priority" th:field="*{priority}" required>
-                          <option value="高">高</option>
-                          <option value="中">中</option>
-                          <option value="低">低</option>
+                        <select class="form-control" id="priority" name="priority" required>
+                          <option value="">選択してください</option>
+                          <option th:each="priority,stat : ${priorityList}" 
+                                  th:value="${priority.categoryCode}" 
+                                  th:text="${priority.categoryName}"
+                                  th:selected="${stat.first}">
+                          </option>
                         </select>
                       </div>
                     </div>

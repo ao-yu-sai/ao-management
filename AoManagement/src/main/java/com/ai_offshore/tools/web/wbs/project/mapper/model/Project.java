@@ -9,6 +9,7 @@ public class Project {
     private String projectName;       // 案件名
     private String description;       // 説明
     private String serviceKbnCode;    // サービス区分コード
+    private String serviceKbnName;    // サービス区分名
     private String status;           // ステータス
     private String priority;         // 優先度
     private Integer progressRate;    // 進捗率

@@ -43,8 +43,8 @@ public class ProjectService {
     /**
      * 全案件を取得
      */
-    public List<Project> findAll() {
-        return projectMapper.selectAll();
+    public List<Project> findByProjectName(String projectName) {
+        return projectMapper.selectByProjectName(projectName);
     }
 
     /**

@@ -97,4 +97,16 @@ $(document).ready(function () {
       $(element).removeClass('is-invalid');
     }
   });
+
+  // ステータスの初期値を設定する場合
+  function setInitialStatus() {
+    // 最初のオプション（「選択してください」）を除いた最初の選択肢を選択
+    const firstStatus = $('#status option:eq(1)').val();
+    if (firstStatus) {
+      $('#status').val(firstStatus);
+    }
+  }
+  
+  // 初期化時にステータスを設定
+  setInitialStatus();
 }); 

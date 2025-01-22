@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{common/layout/layout}">
+
+<head>
+  <title>案件一覧</title>
+  <link rel="stylesheet" th:href="@{/css/project/list.css}">
+</head>
+
+<body>
+  <div layout:fragment="content">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>案件一覧</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+              <li class="breadcrumb-item active">案件一覧</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="content">
+      <div class="container-fluid">
+        <!-- 成功メッセージ -->
+        <div class="alert alert-success" th:if="${successMessage}" th:text="${successMessage}"></div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">案件一覧</h3>
+            <div class="card-tools">
+              <form class="form-inline mr-2 d-inline-block">
+                <div class="input-group input-group-sm">
+                  <input type="text" name="projectName" class="form-control" 
+                    placeholder="案件名で検索" th:value="${projectName}">
+                  <div class="input-group-append">
+                    <button class="btn btn-default" type="submit">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+              <a th:href="@{/project/regist}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i> 新規登録
+              </a>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>サービス区分</th>
+                    <th>チケット番号</th>
+                    <th>案件名</th>
+                    <th>ステータス</th>
+                    <th>優先度</th>
+                    <th>進捗率</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="project : ${projects}">
+                    <td th:text="${project.serviceKbnName}"></td>
+                    <td th:text="${project.ticketNumber}"></td>
+                    <td th:text="${project.projectName}"></td>
+                    <td>
+                      <span th:class="${'badge ' + 
+                        (project.status == '未着手' ? 'badge-secondary' :
+                         project.status == '進行中' ? 'badge-primary' :
+                         project.status == '完了' ? 'badge-success' :
+                         'badge-warning')}"
+                        th:text="${project.status}">
+                      </span>
+                    </td>
+                    <td>
+                      <span th:class="${'badge ' + 
+                        (project.priority == '高' ? 'badge-danger' :
+                         project.priority == '中' ? 'badge-warning' :
+                         'badge-info')}"
+                        th:text="${project.priority}">
+                      </span>
+                    </td>
+                    <td>
+                      <div class="progress">
+                        <div class="progress-bar" role="progressbar"
+                          th:style="'width: ' + (${project.progressRate != null ? project.progressRate : 0}) + '%'"
+                          th:text="${project.progressRate != null ? project.progressRate + '%' : '0%'}">
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <a th:href="@{/project/edit/{ticketNumber}(ticketNumber=${project.ticketNumber})}"
+                        class="btn btn-info btn-sm">
+                        <i class="fas fa-edit"></i> 編集
+                      </a>
+                      <button type="button" class="btn btn-danger btn-sm"
+                        th:data-ticket-number="${project.ticketNumber}"
+                        onclick="deleteProject(this.getAttribute('data-ticket-number'))">
+                        <i class="fas fa-trash"></i> 削除
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <th:block layout:fragment="script">
+    <script th:src="@{/js/project/list.js}"></script>
+  </th:block>
+</body>
+
+</html> 
