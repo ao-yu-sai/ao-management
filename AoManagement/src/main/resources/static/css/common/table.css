@@ -1,0 +1,32 @@
+/* テーブルヘッダーのスタイル */
+.table thead th {
+  background-color: #f4f6f9;  /* AdminLTEのデフォルトの薄いグレー */
+  border-bottom: 2px solid #dee2e6;
+  color: #495057;
+  font-weight: 600;
+  vertical-align: middle;
+  border: 1px solid #dee2e6;
+}
+
+/* テーブルセルの境界線 */
+.table td {
+  border: 1px solid #dee2e6;
+}
+
+/* ホバー時の背景色を維持 */
+.table-hover tbody tr:hover {
+  background-color: rgba(0,0,0,.075);
+}
+
+/* コンパクトテーブルのパディング調整 */
+.table-compact th,
+.table-compact td {
+  padding: 0.5rem;
+}
+
+/* クリック可能な行のスタイル */
+.table tbody tr[onclick],
+.table tbody tr[data-toggle="modal"],
+.table tbody tr.clickable-row {
+  cursor: pointer;
+}

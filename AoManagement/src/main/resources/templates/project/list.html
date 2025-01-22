@@ -52,12 +52,12 @@
           </div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered table-striped">
+              <table class="table table-hover table-compact">
                 <thead>
                   <tr>
-                    <th>サービス区分</th>
                     <th>チケット番号</th>
                     <th>案件名</th>
+                    <th>サービス区分</th>
                     <th>ステータス</th>
                     <th>優先度</th>
                     <th>進捗率</th>
@@ -66,9 +66,9 @@
                 </thead>
                 <tbody>
                   <tr th:each="project : ${projects}">
-                    <td th:text="${project.serviceKbnName}"></td>
                     <td th:text="${project.ticketNumber}"></td>
                     <td th:text="${project.projectName}"></td>
+                    <td th:text="${project.serviceKbnName}"></td>
                     <td>
                       <span th:class="${'badge ' + 
                         (project.status == '未着手' ? 'badge-secondary' :
@@ -89,8 +89,8 @@
                     <td>
                       <div class="progress">
                         <div class="progress-bar" role="progressbar"
-                          th:style="'width: ' + (${project.progressRate != null ? project.progressRate : 0}) + '%'"
-                          th:text="${project.progressRate != null ? project.progressRate + '%' : '0%'}">
+                          th:style="'width: ' + ${project.progressRate ?: 0} + '%'"
+                          th:text="${project.progressRate ?: 0} + '%'">
                         </div>
                       </div>
                     </td>
