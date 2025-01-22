@@ -20,8 +20,13 @@ $(document).ready(function () {
             // 説明を設定
             $('#description').val(response.issue.description);
             
+            // 進捗率を設定
+            if (response.issue.done_ratio !== undefined) {
+              $('#progressRate').val(response.issue.done_ratio);
+            }
+            
             // ステータスを設定（ステータス名が一致する場合）
-            if (response.issue.status) {
+            if (response.issue.status && response.issue.status.name) {
               $('#status option').each(function() {
                 if ($(this).text() === response.issue.status.name) {
                   $('#status').val($(this).val());
@@ -30,7 +35,7 @@ $(document).ready(function () {
             }
             
             // 優先度を設定（優先度名が一致する場合）
-            if (response.issue.priority) {
+            if (response.issue.priority && response.issue.priority.name) {
               $('#priority option').each(function() {
                 if ($(this).text() === response.issue.priority.name) {
                   $('#priority').val($(this).val());
@@ -39,7 +44,8 @@ $(document).ready(function () {
             }
           }
         })
-        .fail(function() {
+        .fail(function(xhr) {
+          console.error('Error fetching ticket:', xhr);
           toastr.error('チケット情報の取得に失敗しました');
         });
     }

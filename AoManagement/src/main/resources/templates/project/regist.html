@@ -37,6 +37,22 @@
           <form id="projectForm" th:action="@{/project/regist}" method="post" th:object="${project}">
             <div class="card-body">
               <div class="row">
+                <!-- サービス区分 -->
+                <div class="col-md-2">
+                  <div class="form-group">
+                    <label for="serviceKbnCode">サービス区分 <span class="text-danger">*</span></label>
+                    <select class="form-control" id="serviceKbnCode" name="serviceKbnCode" 
+                      th:field="*{serviceKbnCode}" required>
+                      <option th:each="category : ${serviceCategories}"
+                        th:value="${category.categoryCode}"
+                        th:text="${category.categoryName}">
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-3">
                 <!-- チケット番号と案件名を1行に -->
                 <div class="col-12">
                   <div class="row">
@@ -61,20 +77,6 @@
 
                 <div class="col-6">
                   <div class="row">
-                    <!-- サービス区分 -->
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label for="serviceKbnCode">サービス区分 <span class="text-danger">*</span></label>
-                        <select class="form-control" id="serviceKbnCode" name="serviceKbnCode" 
-                          th:field="*{serviceKbnCode}" required>
-                          <option th:each="category : ${serviceCategories}"
-                            th:value="${category.categoryCode}"
-                            th:text="${category.categoryName}">
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-
                     <!-- ステータス -->
                     <div class="col-md-2">
                       <div class="form-group">
