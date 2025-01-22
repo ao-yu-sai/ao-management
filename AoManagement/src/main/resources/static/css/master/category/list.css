@@ -22,3 +22,91 @@ tr.selected {
 .clickable-row {
   cursor: pointer;
 }
+
+/* 区分種別マスター用の列幅設定 */
+.category-type-table th,
+.category-type-table td {
+  white-space: nowrap;
+}
+
+/* 区分種別コード列 */
+.category-type-table th:nth-child(1),
+.category-type-table td:nth-child(1) {
+  width: 25%;
+}
+
+/* 区分種別名列 */
+.category-type-table th:nth-child(2),
+.category-type-table td:nth-child(2) {
+  width: 25%;
+}
+
+/* 説明列 */
+.category-type-table th:nth-child(3),
+.category-type-table td:nth-child(3) {
+  width: 25%;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 状態列 */
+.category-type-table th:nth-child(4),
+.category-type-table td:nth-child(4) {
+  width: 10%;
+  text-align: center;
+}
+
+/* 操作列 */
+.category-type-table th:nth-child(5),
+.category-type-table td:nth-child(5) {
+  width: 20%;
+  text-align: center;
+}
+
+/* 区分一覧用の列幅設定 */
+.category-list-table th,
+.category-list-table td {
+  white-space: nowrap;
+}
+
+/* 区分コード列 */
+.category-list-table th:nth-child(1),
+.category-list-table td:nth-child(1) {
+  width: 15%;
+}
+
+/* 区分名列 */
+.category-list-table th:nth-child(2),
+.category-list-table td:nth-child(2) {
+  width: 25%;
+}
+
+/* 説明列 */
+.category-list-table th:nth-child(3),
+.category-list-table td:nth-child(3) {
+  width: 30%;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 表示順列 */
+.category-list-table th:nth-child(4),
+.category-list-table td:nth-child(4) {
+  width: 10%;
+  text-align: center;
+}
+
+/* 操作列 */
+.category-list-table th:nth-child(5),
+.category-list-table td:nth-child(5) {
+  width: 20%;
+  text-align: center;
+}
+
+/* テーブルのレイアウト固定 */
+.category-type-table,
+.category-list-table {
+  table-layout: fixed;
+}
