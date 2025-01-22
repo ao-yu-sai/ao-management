@@ -45,7 +45,7 @@ public class CategoryTypeController {
     }
     
     /**
-     * ★区分一覧を取得（フラグメント） GET /category-types/{code}/categories
+     * ★区分一覧を取得（フラグメント） GET /master/category/{code}/categories
      */
     @GetMapping("/{code}/categories")
     public String getCategoryList(@PathVariable("code") String categoryTypeCode,
@@ -64,11 +64,11 @@ public class CategoryTypeController {
     @PostMapping
     public String create(@ModelAttribute CategoryType categoryType) {
         categoryTypeService.create(categoryType);
-        return "redirect:/category-types";
+        return "redirect:/master/category";
     }
     
     /**
-     * ★区分種別マスター編集画面を表示 GET /category-types/{code}/edit
+     * ★区分種別マスター編集画面を表示 GET /master/category/{code}/edit
      */
     @GetMapping("/{code}/edit")
     public String editForm(@PathVariable String code, Model model) {
@@ -83,21 +83,20 @@ public class CategoryTypeController {
     public String update(@PathVariable String code, @ModelAttribute CategoryType categoryType) {
         categoryType.setCategoryTypeCode(code);
         categoryTypeService.update(categoryType);
-        return "redirect:/category-types";
+        return "redirect:/master/category";
     }
     
     /**
-     * ★区分種別マスターを削除
-     * POST /category-types/{code}/delete
+     * ★区分種別マスターを削除 POST /master/category/{code}/delete
      */
     @PostMapping("/{code}/delete")
     public String delete(@PathVariable String code) {
         categoryTypeService.delete(code);
-        return "redirect:/category-types";
+        return "redirect:/master/category";
     }
     
     /**
-     * ★区分種別マスターの詳細情報を取得（API） GET /category-types/{code}
+     * ★区分種別マスターの詳細情報を取得（API） GET /master/category/{code}
      */
     @GetMapping("/{code}")
     @ResponseBody
@@ -106,7 +105,7 @@ public class CategoryTypeController {
     }
     
     /**
-     * ★区分を保存（API） POST /category-types/{code}/categories
+     * ★区分を保存（API） POST /master/category/{code}/categories
      */
     @PostMapping("/{code}/categories")
     @ResponseBody
@@ -126,7 +125,7 @@ public class CategoryTypeController {
     }
     
     /**
-     * ★区分を削除（API） POST /category-types/{typeCode}/categories/{code}/delete
+     * ★区分を削除（API） POST /master/category/{typeCode}/categories/{code}/delete
      */
     @PostMapping("/{typeCode}/categories/{code}/delete")
     @ResponseBody

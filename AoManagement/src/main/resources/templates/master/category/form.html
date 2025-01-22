@@ -23,10 +23,10 @@
             <div class="container-fluid">
                 <div class="card">
                     <!-- フォーム 
-                         - 新規登録時は /category-types にPOST
-                         - 編集時は /category-types/{code} にPOST
+                         - 新規登録時は /master/category にPOST
+                         - 編集時は /master/category/{code} にPOST
                     -->
-                    <form id="categoryTypeForm" th:action="${categoryType.categoryTypeCode != null} ? @{/category-types/{code}(code=${categoryType.categoryTypeCode})} : @{/category-types}" method="post">
+                    <form id="categoryTypeForm" th:action="${categoryType.categoryTypeCode != null} ? @{/master/category/{code}(code=${categoryType.categoryTypeCode})} : @{/master/category}" method="post">
                         <div class="card-body">
                             <!-- 区分種別コード -->
                             <div class="form-group">
@@ -66,7 +66,7 @@
                         <!-- フォームボタン -->
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">保存</button>
-                            <a href="/category-types" class="btn btn-default">キャンセル</a>
+                            <a href="/master/category" class="btn btn-default">キャンセル</a>
                         </div>
                     </form>
                 </div>

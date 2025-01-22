@@ -42,26 +42,11 @@ $(document).ready(function() {
             modal.find('#originalCategoryCode').val('');
             modal.find('#displayOrder').val(0);
             modal.find('.modal-title').text('区分新規作成');
-            modal.find('form').attr('action', `/category-types/${selectedTypeCode}/categories`);
+            modal.find('form').attr('action', `/master/category/${selectedTypeCode}/categories`);
             modal.modal('show');
         } else {
             alert('区分種別を選択してください。');
         }
-    });
-
-    // モーダルの編集ボタン処理
-    $(document).on('click', '[data-toggle="modal"][data-target="#categoryModal"]', function() {
-        var button = $(this);
-        var modal = $('#categoryModal');
-        var categoryCode = button.data('category-code');
-        
-        modal.find('.modal-title').text('区分編集');
-        modal.find('#categoryCode').val(categoryCode);
-        modal.find('#originalCategoryCode').val(categoryCode);
-        modal.find('#categoryName').val(button.data('category-name'));
-        modal.find('#description').val(button.data('description'));
-        modal.find('#displayOrder').val(button.data('display-order'));
-        modal.find('form').attr('action', `/category-types/${selectedTypeCode}/categories`);
     });
 
     // 削除ボタンの初期化
@@ -82,7 +67,7 @@ $(document).ready(function() {
     // 削除確認ボタンのクリックハンドラ
     $('#confirmDeleteBtn').click(function() {
         if (categoryToDelete && selectedTypeCode) {
-            $.post(`/category-types/${selectedTypeCode}/categories/${categoryToDelete}/delete`)
+            $.post(`/master/category/${selectedTypeCode}/categories/${categoryToDelete}/delete`)
                 .done(function() {
                     $('#deleteCategoryModal').modal('hide');
                     loadCategories(selectedTypeCode);
@@ -138,11 +123,11 @@ $(document).ready(function() {
     // 編集ボタンのクリックハンドラ
     $('.edit-btn').click(function() {
         const categoryTypeCode = $(this).data('category-type-code');
-        $.get(`/category-types/${categoryTypeCode}`)
+        $.get(`/master/category/${categoryTypeCode}`)
             .done(function(categoryType) {
                 $('#categoryTypeForm').attr('data-mode', 'edit');
                 $('#categoryTypeForm').attr('data-category-type-code', categoryTypeCode);
-                $('#categoryTypeForm').attr('action', `/category-types/${categoryTypeCode}`);
+                $('#categoryTypeForm').attr('action', `/master/category/${categoryTypeCode}`);
                 $('#categoryTypeCode').val(categoryType.categoryTypeCode);
                 $('#categoryTypeName').val(categoryType.categoryTypeName);
                 $('#description').val(categoryType.description);
@@ -166,7 +151,7 @@ $(document).ready(function() {
         $('#categoryTypeForm').trigger('reset');
         $('#categoryTypeForm').removeAttr('data-mode');
         $('#categoryTypeForm').removeAttr('data-category-type-code');
-        $('#categoryTypeForm').attr('action', '/category-types');
+        $('#categoryTypeForm').attr('action', '/master/category');
         $('.modal-title').text('区分種別登録');
         $('#categoryTypeCode').prop('readonly', false);
     });
@@ -174,7 +159,7 @@ $(document).ready(function() {
     // 区分種別削除確認ボタンのクリックハンドラ
     $('#confirmDeleteTypeBtn').click(function() {
         if (categoryTypeToDelete) {
-            $.post(`/category-types/${categoryTypeToDelete}/delete`)
+            $.post(`/master/category/${categoryTypeToDelete}/delete`)
                 .done(function() {
                     $('#deleteCategoryTypeModal').modal('hide');
                     location.reload();
