@@ -49,34 +49,34 @@ mybatis:
     local-cache-scope: statement
   type-aliases-package: com.ai_offshore.tools.wbs.web.model
 
-# PageHelper設定
 pagehelper:
   helper-dialect: postgresql
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
-
-# Redmine設定
 redmine:
+
+# PageHelper設定
   api:
     url: https://benefit-one.net/extrdmn
     key: e1b2766512ba4f2b8098df6ecd3bb60e6b0c32c9
-
 http:
+
   encoding:
     charset: UTF-8
+# Redmine設定
     enabled: true
-    force: true 
+    force: true
 
-# ログ設定
 logging:
   charset:
     console: UTF-8
     file: UTF-8
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" 
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n'
   level:
     root: INFO
     com.ai_offshore.tools.wbs.web: DEBUG
-    org.springframework.web.client.RestTemplate: DEBUG 
+# ログ設定
+    org.springframework.web.client.RestTemplate: DEBUG
     org.mybatis: DEBUG

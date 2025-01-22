@@ -18,4 +18,4 @@ public class Function {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Category category;
-} 
+}

@@ -20,4 +20,4 @@ public class Task {
     private LocalDate actualEndDate;
     private Double actualManHours;
     private Integer progressRate;
-} 
+}

@@ -11,31 +11,31 @@ public class Category {
     private String description;
     private Integer displayOrder;
     private Boolean isActive;
-    
+
     // 関連エンティティ
     private CategoryType categoryType;
-    
+
     public String getCategoryCode() {
         return categoryCode;
     }
-    
+
     public void setCategoryCode(String categoryCode) {
         this.categoryCode = categoryCode;
     }
-    
+
     public String getCategoryTypeCode() {
         return categoryTypeCode;
     }
-    
+
     public void setCategoryTypeCode(String categoryTypeCode) {
         this.categoryTypeCode = categoryTypeCode;
     }
-    
+
     public String getNewCategoryCode() {
         return newCategoryCode;
     }
-    
+
     public void setNewCategoryCode(String newCategoryCode) {
         this.newCategoryCode = newCategoryCode;
     }
-} 
+}

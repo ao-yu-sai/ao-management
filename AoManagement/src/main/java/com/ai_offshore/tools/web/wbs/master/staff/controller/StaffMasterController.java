@@ -10,16 +10,16 @@ import com.ai_offshore.tools.web.wbs.master.staff.service.StaffService;
 @Controller
 @RequestMapping("/master/staff")
 public class StaffMasterController {
-    
+
     private final StaffService staffService;
-    
+
     public StaffMasterController(StaffService staffService) {
         this.staffService = staffService;
     }
-    
+
     @GetMapping
     public String list(Model model) {
         model.addAttribute("staffList", staffService.findAll());
         return "master/staff/list";
     }
-} 
+}

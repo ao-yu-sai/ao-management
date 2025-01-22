@@ -24,17 +24,19 @@ import com.ai_offshore.tools.web.wbs.category.service.CategoryTypeService;
 @Controller
 @RequestMapping("/master/category")
 public class CategoryTypeController {
-    
-    private static final Logger log = LoggerFactory.getLogger(CategoryTypeController.class);
-    
+
+    private static final Logger log = LoggerFactory
+            .getLogger(CategoryTypeController.class);
+
     private final CategoryTypeService categoryTypeService;
     private final CategoryService categoryService;
-    
-    public CategoryTypeController(CategoryTypeService categoryTypeService, CategoryService categoryService) {
+
+    public CategoryTypeController(CategoryTypeService categoryTypeService,
+            CategoryService categoryService) {
         this.categoryTypeService = categoryTypeService;
         this.categoryService = categoryService;
     }
-    
+
     /**
      * ★区分種別マスター一覧画面を表示
      */
@@ -43,7 +45,7 @@ public class CategoryTypeController {
         model.addAttribute("categoryTypes", categoryTypeService.findAll());
         return "master/category/list";
     }
-    
+
     /**
      * ★区分一覧を取得（フラグメント） GET /master/category/{code}/categories
      */
@@ -66,26 +68,28 @@ public class CategoryTypeController {
         categoryTypeService.create(categoryType);
         return "redirect:/master/category";
     }
-    
+
     /**
      * ★区分種別マスター編集画面を表示 GET /master/category/{code}/edit
      */
     @GetMapping("/{code}/edit")
     public String editForm(@PathVariable String code, Model model) {
-        model.addAttribute("categoryType", categoryTypeService.findByCode(code));
+        model.addAttribute("categoryType",
+                categoryTypeService.findByCode(code));
         return "category/type/form";
     }
-    
+
     /**
      * ★区分種別マスターを更新
      */
     @PostMapping("/{code}")
-    public String update(@PathVariable String code, @ModelAttribute CategoryType categoryType) {
+    public String update(@PathVariable String code,
+            @ModelAttribute CategoryType categoryType) {
         categoryType.setCategoryTypeCode(code);
         categoryTypeService.update(categoryType);
         return "redirect:/master/category";
     }
-    
+
     /**
      * ★区分種別マスターを削除 POST /master/category/{code}/delete
      */
@@ -94,7 +98,7 @@ public class CategoryTypeController {
         categoryTypeService.delete(code);
         return "redirect:/master/category";
     }
-    
+
     /**
      * ★区分種別マスターの詳細情報を取得（API） GET /master/category/{code}
      */
@@ -103,15 +107,17 @@ public class CategoryTypeController {
     public CategoryType getDetail(@PathVariable String code) {
         return categoryTypeService.findByCode(code);
     }
-    
+
     /**
      * ★区分を保存（API） POST /master/category/{code}/categories
      */
     @PostMapping("/{code}/categories")
     @ResponseBody
-    public String saveCategory(@PathVariable("code") String categoryTypeCode, @ModelAttribute Category category) {
+    public String saveCategory(@PathVariable("code") String categoryTypeCode,
+            @ModelAttribute Category category) {
         category.setCategoryTypeCode(categoryTypeCode);
-        Category existingCategory = categoryService.findByTypeCodeAndCode(categoryTypeCode, category.getCategoryCode());
+        Category existingCategory = categoryService.findByTypeCodeAndCode(
+                categoryTypeCode, category.getCategoryCode());
         if (existingCategory == null) {
             // 新規登録の場合
             category.setIsActive(true);
@@ -123,14 +129,15 @@ public class CategoryTypeController {
         }
         return "success";
     }
-    
+
     /**
      * ★区分を削除（API） POST /master/category/{typeCode}/categories/{code}/delete
      */
     @PostMapping("/{typeCode}/categories/{code}/delete")
     @ResponseBody
-    public String deleteCategory(@PathVariable String typeCode, @PathVariable String code) {
+    public String deleteCategory(@PathVariable String typeCode,
+            @PathVariable String code) {
         categoryService.delete(typeCode, code);
         return "success";
     }
-} 
+}

@@ -8,4 +8,4 @@ public class CategoryType {
     private String categoryTypeName;
     private String description;
     private Boolean isActive;
-} 
+}

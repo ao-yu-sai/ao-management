@@ -14,4 +14,4 @@ public class DashboardController {
         model.addAttribute("currentPage", "dashboard");
         return "dashboard/index";
     }
-} 
+}

@@ -32,7 +32,8 @@ public class StaffController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<String> updateStaff(@PathVariable Long id, @RequestBody Staff staff) {
+    public ResponseEntity<String> updateStaff(@PathVariable Long id,
+            @RequestBody Staff staff) {
         staff.setStaffId(id);
         staffService.update(staff);
         return ResponseEntity.ok("更新しました");
@@ -49,4 +50,4 @@ public class StaffController {
         staffService.delete(id);
         return ResponseEntity.ok("削除しました");
     }
-} 
+}

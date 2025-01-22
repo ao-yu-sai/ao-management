@@ -1,40 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <body>
-    <div class="table-responsive">
-        <table class="table table-hover text-nowrap table-compact">
-            <thead>
-                <tr>
-                    <th>区分コード</th>
-                    <th>区分名</th>
-                    <th>説明</th>
-                    <th>表示順</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="category : ${categories}">
-                    <td th:text="${category.categoryCode}"></td>
-                    <td th:text="${category.categoryName}"></td>
-                    <td th:text="${category.description}"></td>
-                    <td th:text="${category.displayOrder}"></td>
-                    <td>
-                        <button type="button" class="btn btn-info btn-sm"
-                                data-toggle="modal" data-target="#categoryModal"
-                                th:data-category-code="${category.categoryCode}"
-                                th:data-category-name="${category.categoryName}"
-                                th:data-description="${category.description}"
-                                th:data-display-order="${category.displayOrder}">
-                            <i class="fas fa-edit"></i> 編集
-                        </button>
-                        <button type="button" class="btn btn-danger btn-sm category-delete-btn"
-                                th:data-category-code="${category.categoryCode}">
-                            <i class="fas fa-trash"></i> 削除
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-hover text-nowrap table-compact">
+      <thead>
+        <tr>
+          <th>区分コード</th>
+          <th>区分名</th>
+          <th>説明</th>
+          <th>表示順</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="category : ${categories}">
+          <td th:text="${category.categoryCode}"></td>
+          <td th:text="${category.categoryName}"></td>
+          <td th:text="${category.description}"></td>
+          <td th:text="${category.displayOrder}"></td>
+          <td>
+            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#categoryModal"
+              th:data-category-code="${category.categoryCode}" th:data-category-name="${category.categoryName}"
+              th:data-description="${category.description}" th:data-display-order="${category.displayOrder}">
+              <i class="fas fa-edit"></i> 編集
+            </button>
+            <button type="button" class="btn btn-danger btn-sm category-delete-btn"
+              th:data-category-code="${category.categoryCode}">
+              <i class="fas fa-trash"></i> 削除
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </body>
-</html> 
+
+</html>

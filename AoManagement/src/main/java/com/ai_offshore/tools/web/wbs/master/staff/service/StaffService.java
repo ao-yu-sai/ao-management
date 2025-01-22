@@ -10,33 +10,33 @@ import com.ai_offshore.tools.web.wbs.master.staff.model.Staff;
 
 @Service
 public class StaffService {
-    
+
     private final StaffMapper staffMapper;
-    
+
     public StaffService(StaffMapper staffMapper) {
         this.staffMapper = staffMapper;
     }
-    
+
     public List<Staff> findAll() {
         return staffMapper.findAll();
     }
-    
+
     public Staff findById(Long id) {
         return staffMapper.findById(id);
     }
-    
+
     @Transactional
     public void create(Staff staff) {
         staffMapper.insert(staff);
     }
-    
+
     @Transactional
     public void update(Staff staff) {
         staffMapper.update(staff);
     }
-    
+
     @Transactional
     public void delete(Long id) {
         staffMapper.delete(id);
     }
-} 
+}

@@ -1,209 +1,210 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layout/layout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{common/layout/layout}">
+
 <head>
-    <title>機能マスタ一覧</title>
-	<link rel="stylesheet" th:href="@{/css/master/function/list.css}">
+  <title>機能マスタ一覧</title>
+  <link rel="stylesheet" th:href="@{/css/master/function/list.css}">
 </head>
+
 <body>
-    <div layout:fragment="content">
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>機能マスタ一覧</h1>
-                    </div>
-                </div>
-            </div>
+  <div layout:fragment="content">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>機能マスタ一覧</h1>
+          </div>
         </div>
-
-        <section class="content">
-            <div class="container-fluid">
-                <div class="card">
-                    <div class="card-header">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#functionModal">
-                            <i class="fas fa-plus"></i> 機能登録
-                        </button>
-                        <div class="mt-2">
-                            <form class="form-inline" method="get" action="/master/functions">
-                                <input type="text" class="form-control form-control-sm mr-2" 
-                                       name="keyword" th:value="${keyword}" placeholder="検索...">
-                                <button type="submit" class="btn btn-sm btn-default">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </form>
-                        </div>
-                        <div class="card-tools">
-                            <span class="mr-2">
-                                全<span th:text="${total}"></span>件
-                            </span>
-                            <select class="form-control form-control-sm float-left mr-2" 
-                                    id="pageSizeSelect" style="width: auto;">
-                                <option value="10" th:selected="${pageSize == 10}">10件</option>
-                                <option value="20" th:selected="${pageSize == 20}">20件</option>
-                                <option value="50" th:selected="${pageSize == 50}">50件</option>
-                                <option value="100" th:selected="${pageSize == 100}">100件</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="card-body p-0">
-                        <div class="table-container">
-                            <table class="table table-hover text-nowrap table-compact">
-                                <thead>
-                                    <tr>
-                                        <th>サービス</th>
-                                        <th>機能コード</th>
-                                        <th>機能名</th>
-                                        <th>説明</th>
-                                        <th>状態</th>
-                                        <th>操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="function : ${functions}">
-                                        <td th:text="${function.category?.categoryName}"></td>
-                                        <td th:text="${function.functionCode}"></td>
-                                        <td th:text="${function.functionName}"></td>
-                                        <td class="description-cell" 
-                                            th:text="${function.description}"
-                                            th:data-description="${function.description}"
-                                            onclick="showDescription(this)"></td>
-                                        <td>
-                                            <span th:if="${function.isActive}" class="badge badge-success">有効</span>
-                                            <span th:unless="${function.isActive}" class="badge badge-secondary">無効</span>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-info btn-sm edit-btn"
-                                                    th:data-function-id="${function.functionCode}">
-                                                <i class="fas fa-edit"></i> 編集
-                                            </button>
-                                            <button type="button" class="btn btn-danger btn-sm delete-btn"
-                                                    th:data-function-id="${function.functionCode}">
-                                                <i class="fas fa-trash"></i> 削除
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- ページネーション -->
-                        <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-right">
-                                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/master/functions(page=${currentPage - 1},size=${pageSize},keyword=${keyword})}">«</a>
-                                </li>
-                                <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
-                                    th:classappend="${pageNum == currentPage} ? 'active'">
-                                    <a class="page-link" th:href="@{/master/functions(page=${pageNum},size=${pageSize},keyword=${keyword})}"
-                                       th:text="${pageNum}"></a>
-                                </li>
-                                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
-                                    <a class="page-link" th:href="@{/master/functions(page=${currentPage + 1},size=${pageSize},keyword=${keyword})}">»</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 説明詳細モーダル -->
-        <div class="modal fade" id="descriptionModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">説明詳細</h5>
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span>&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p id="fullDescription" style="white-space: pre-wrap;"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 機能登録・編集モーダル -->
-        <div class="modal fade" id="functionModal" tabindex="-1" data-backdrop="static">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form id="functionForm" method="post">
-                        <div class="modal-header">
-                            <h5 class="modal-title">機能登録</h5>
-                            <button type="button" class="close" data-dismiss="modal">
-                                <span>&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="serviceKbnCode">サービス <span class="text-danger">*</span></label>
-                                <select class="form-control" id="serviceKbnCode" name="serviceKbnCode" required>
-                                    <option value="">選択してください</option>
-                                    <th:block th:each="category : ${categories}">
-                                        <option th:value="${category.categoryCode}" 
-                                                th:text="${category.categoryName}"></option>
-                                    </th:block>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="functionCode">機能コード <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="functionCode" name="functionCode" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="functionName">機能名 <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="functionName" name="functionName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="description">説明</label>
-                                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="isActive" name="isActive" checked>
-                                    <label class="custom-control-label" for="isActive">有効</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-                            <button type="submit" class="btn btn-primary">保存</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- 削除確認モーダル -->
-        <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">削除確認</h5>
-                        <button type="button" class="close" data-dismiss="modal">
-                            <span>&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>この機能を削除してよろしいですか？</p>
-                        <p class="text-danger">この操作は取り消せません。</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
-                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
-                            <i class="fas fa-trash"></i> 削除
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-		<th:block layout:fragment="script">
-			<script th:src="@{/js/master/function/list.js}"></script>
-		</th:block>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="card">
+          <div class="card-header">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#functionModal">
+              <i class="fas fa-plus"></i> 機能登録
+            </button>
+            <div class="mt-2">
+              <form class="form-inline" method="get" action="/master/functions">
+                <input type="text" class="form-control form-control-sm mr-2" name="keyword" th:value="${keyword}"
+                  placeholder="検索...">
+                <button type="submit" class="btn btn-sm btn-default">
+                  <i class="fas fa-search"></i>
+                </button>
+              </form>
+            </div>
+            <div class="card-tools">
+              <span class="mr-2">
+                全<span th:text="${total}"></span>件
+              </span>
+              <select class="form-control form-control-sm float-left mr-2" id="pageSizeSelect" style="width: auto;">
+                <option value="10" th:selected="${pageSize == 10}">10件</option>
+                <option value="20" th:selected="${pageSize == 20}">20件</option>
+                <option value="50" th:selected="${pageSize == 50}">50件</option>
+                <option value="100" th:selected="${pageSize == 100}">100件</option>
+              </select>
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-container">
+              <table class="table table-hover text-nowrap table-compact">
+                <thead>
+                  <tr>
+                    <th>サービス</th>
+                    <th>機能コード</th>
+                    <th>機能名</th>
+                    <th>説明</th>
+                    <th>状態</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="function : ${functions}">
+                    <td th:text="${function.category?.categoryName}"></td>
+                    <td th:text="${function.functionCode}"></td>
+                    <td th:text="${function.functionName}"></td>
+                    <td class="description-cell" th:text="${function.description}"
+                      th:data-description="${function.description}" onclick="showDescription(this)"></td>
+                    <td>
+                      <span th:if="${function.isActive}" class="badge badge-success">有効</span>
+                      <span th:unless="${function.isActive}" class="badge badge-secondary">無効</span>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-info btn-sm edit-btn"
+                        th:data-function-id="${function.functionCode}">
+                        <i class="fas fa-edit"></i> 編集
+                      </button>
+                      <button type="button" class="btn btn-danger btn-sm delete-btn"
+                        th:data-function-id="${function.functionCode}">
+                        <i class="fas fa-trash"></i> 削除
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- ページネーション -->
+            <div class="card-footer clearfix">
+              <ul class="pagination pagination-sm m-0 float-right">
+                <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                  <a class="page-link"
+                    th:href="@{/master/functions(page=${currentPage - 1},size=${pageSize},keyword=${keyword})}">«</a>
+                </li>
+                <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, totalPages)}"
+                  th:classappend="${pageNum == currentPage} ? 'active'">
+                  <a class="page-link"
+                    th:href="@{/master/functions(page=${pageNum},size=${pageSize},keyword=${keyword})}"
+                    th:text="${pageNum}"></a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                  <a class="page-link"
+                    th:href="@{/master/functions(page=${currentPage + 1},size=${pageSize},keyword=${keyword})}">»</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 説明詳細モーダル -->
+    <div class="modal fade" id="descriptionModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">説明詳細</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p id="fullDescription" style="white-space: pre-wrap;"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 機能登録・編集モーダル -->
+    <div class="modal fade" id="functionModal" tabindex="-1" data-backdrop="static">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form id="functionForm" method="post">
+            <div class="modal-header">
+              <h5 class="modal-title">機能登録</h5>
+              <button type="button" class="close" data-dismiss="modal">
+                <span>&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="serviceKbnCode">サービス <span class="text-danger">*</span></label>
+                <select class="form-control" id="serviceKbnCode" name="serviceKbnCode" required>
+                  <option value="">選択してください</option>
+                  <th:block th:each="category : ${categories}">
+                    <option th:value="${category.categoryCode}" th:text="${category.categoryName}"></option>
+                  </th:block>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="functionCode">機能コード <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="functionCode" name="functionCode" required>
+              </div>
+              <div class="form-group">
+                <label for="functionName">機能名 <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="functionName" name="functionName" required>
+              </div>
+              <div class="form-group">
+                <label for="description">説明</label>
+                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="isActive" name="isActive" checked>
+                  <label class="custom-control-label" for="isActive">有効</label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+              <button type="submit" class="btn btn-primary">保存</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- 削除確認モーダル -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">削除確認</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>この機能を削除してよろしいですか？</p>
+            <p class="text-danger">この操作は取り消せません。</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+              <i class="fas fa-trash"></i> 削除
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <th:block layout:fragment="script">
+    <script th:src="@{/js/master/function/list.js}"></script>
+  </th:block>
 </body>
-</html> 
+
+</html>
