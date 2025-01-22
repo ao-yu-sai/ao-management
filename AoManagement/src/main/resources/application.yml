@@ -1,0 +1,82 @@
+server:
+  port: 8888
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/wbs_db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    sql:
+      init:
+        encoding: UTF-8
+
+  messages:
+    encoding: UTF-8
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+    create-schemas: true
+    schemas: public
+    repair-on-migrate: true
+    validate-on-migrate: false
+    clean-on-validation-error: true
+    clean-disabled: false
+
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+    livereload:
+      enabled: true
+
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
+    encoding: UTF-8
+
+mybatis:
+  mapper-locations: classpath:com/ai_offshore/tools/web/*/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-prefix: 'MyBatis: '
+    default-statement-timeout: 30
+    default-fetch-size: 100
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+    local-cache-scope: statement
+  type-aliases-package: com.ai_offshore.tools.wbs.web.model
+
+# PageHelper設定
+pagehelper:
+  helper-dialect: postgresql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+# Redmine設定
+redmine:
+  api:
+    url: https://benefit-one.net/extrdmn
+    key: e1b2766512ba4f2b8098df6ecd3bb60e6b0c32c9
+
+http:
+  encoding:
+    charset: UTF-8
+    enabled: true
+    force: true 
+
+# ログ設定
+logging:
+  charset:
+    console: UTF-8
+    file: UTF-8
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n" 
+  level:
+    root: INFO
+    com.ai_offshore.tools.wbs.web: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG 
+    org.mybatis: DEBUG

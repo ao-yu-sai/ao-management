@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/layout}">
+<head>
+    <title>区分種別マスター</title>
+	<link rel="stylesheet" th:href="@{/css/master/category/list.css}">
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>区分種別マスター</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- 区分種別一覧 -->
+                    <div class="col-md-5">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">区分種別一覧</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#categoryTypeModal">
+                                        <i class="fas fa-plus"></i> 新規作成
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-0 pb-0">
+                                <div class="table-container">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover text-nowrap table-compact">
+                                            <thead>
+                                                <tr>
+                                                    <th>区分種別コード</th>
+                                                    <th>区分種別名</th>
+                                                    <th>説明</th>
+                                                    <th>状態</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="type : ${categoryTypes}" class="clickable-row" th:data-type-code="${type.categoryTypeCode}">
+                                                    <td th:text="${type.categoryTypeCode}"></td>
+                                                    <td th:text="${type.categoryTypeName}"></td>
+                                                    <td th:text="${type.description}"></td>
+                                                    <td>
+                                                        <span th:if="${type.isActive}" class="badge badge-success">有効</span>
+                                                        <span th:unless="${type.isActive}" class="badge badge-secondary">無効</span>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-info btn-sm edit-btn"
+                                                                th:data-category-type-code="${type.categoryTypeCode}">
+                                                            <i class="fas fa-edit"></i> 編集
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger btn-sm delete-btn"
+                                                                th:data-category-type-code="${type.categoryTypeCode}">
+                                                            <i class="fas fa-trash"></i> 削除
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 区分一覧 -->
+                    <div class="col-md-7">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">区分一覧</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-primary btn-sm" id="addCategoryBtn" disabled>
+                                        <i class="fas fa-plus"></i> 新規作成
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-0 pb-0">
+                                <div class="table-container">
+                                    <div id="categoryList">
+                                        <p class="text-muted text-center">区分種別を選択してください</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 区分種別登録・編集モーダル -->
+        <div class="modal fade" id="categoryTypeModal" tabindex="-1" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form id="categoryTypeForm" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title">区分種別登録</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="categoryTypeCode">区分種別コード <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="categoryTypeCode" 
+                                       name="categoryTypeCode" required maxlength="50"
+                                       pattern="^[A-Za-z0-9_-]+$"
+                                       title="半角英数字、ハイフン、アンダースコアのみ使用可能です">
+                                <small class="form-text text-muted">
+                                    半角英数字、ハイフン、アンダースコアで入力してください
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryTypeName">区分種別名 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="categoryTypeName" name="categoryTypeName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">説明</label>
+                                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="isActive" name="isActive" checked>
+                                    <label class="custom-control-label" for="isActive">有効</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 区分登録・編集モーダル -->
+        <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form id="categoryForm" method="post" action="/category-types/{code}">
+                        <input type="hidden" id="categoryId" name="categoryId">
+                        <input type="hidden" id="originalCategoryCode" name="originalCategoryCode">
+                        <div class="modal-header">
+                            <h5 class="modal-title">区分登録・編集</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="categoryCode">区分コード <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="categoryCode" 
+                                       name="categoryCode" required maxlength="50"
+                                       pattern="^[A-Za-z0-9_-]+$"
+                                       title="半角英数字、ハイフン、アンダースコアのみ使用可能です">
+                                <small class="form-text text-muted">
+                                    半角英数字、ハイフン、アンダースコアで入力してください
+                                </small>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoryName">区分名 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">説明</label>
+                                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="displayOrder">表示順</label>
+                                <input type="number" class="form-control" id="displayOrder" name="displayOrder" value="0">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 削除確認モーダル -->
+        <div class="modal fade" id="deleteCategoryModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">削除確認</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>この区分を削除してよろしいですか？</p>
+                        <p class="text-danger">この操作は取り消せません。</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">削除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 区分種別削除確認モーダル -->
+        <div class="modal fade" id="deleteCategoryTypeModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">削除確認</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>この区分種別を削除してよろしいですか？</p>
+                        <p class="text-danger">この操作は取り消せません。</p>
+                        <p class="text-danger">関連する区分データもすべて削除されます。</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteTypeBtn">削除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+		<script th:src="@{/js/master/category/list.js}"></script>
+    </th:block>
+</body>
+</html> 

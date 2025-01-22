@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/layout}">
+<head>
+    <title>区分種別マスター詳細</title>
+    <style>
+        tr.selected {
+            background-color: rgba(0, 123, 255, 0.1) !important;
+        }
+        /* ホバー時の背景色を調整 */
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.075);
+        }
+        .table-hover tbody tr.selected:hover {
+            background-color: rgba(0, 123, 255, 0.15) !important;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>区分種別マスター詳細</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/category-types">区分種別マスター</a></li>
+                            <li class="breadcrumb-item active">詳細</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content">
+            <div class="container-fluid">
+                <!-- 区分種別情報 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">区分種別情報</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <dl class="row">
+                                    <dt class="col-sm-4">区分種別名</dt>
+                                    <dd class="col-sm-8" th:text="${categoryType.categoryTypeName}"></dd>
+                                    <dt class="col-sm-4">説明</dt>
+                                    <dd class="col-sm-8" th:text="${categoryType.description}"></dd>
+                                    <dt class="col-sm-4">表示順</dt>
+                                    <dd class="col-sm-8" th:text="${categoryType.displayOrder}"></dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 区分一覧 -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col">
+                                <h3 class="card-title">区分一覧</h3>
+                            </div>
+                            <div class="col">
+                                <div class="float-right">
+                                    <button type="button" class="btn btn-danger btn-sm mr-2" id="deleteSelected" disabled>
+                                        <i class="fas fa-trash"></i> 選択削除
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#categoryModal">
+                                        <i class="fas fa-plus"></i> 新規作成
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                        <form id="bulkActionForm" th:action="@{/category-types/{typeId}/categories/bulk-delete(typeId=${categoryType.categoryTypeId})}" method="post">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div class="icheck-primary">
+                                                <input type="checkbox" id="selectAll">
+                                                <label for="selectAll"></label>
+                                            </div>
+                                        </th>
+                                        <th>ID</th>
+                                        <th>区分名</th>
+                                        <th>説明</th>
+                                        <th>表示順</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="category : ${categories}">
+                                        <td>
+                                            <div class="icheck-primary">
+                                                <input type="checkbox" name="selectedIds" th:id="${'category-' + category.categoryId}"
+                                                       th:value="${category.categoryId}" class="category-checkbox">
+                                                <label th:for="${'category-' + category.categoryId}"></label>
+                                            </div>
+                                        </td>
+                                        <td th:text="${category.categoryId}"></td>
+                                        <td th:text="${category.categoryName}"></td>
+                                        <td th:text="${category.description}"></td>
+                                        <td th:text="${category.displayOrder}"></td>
+                                        <td>
+                                            <button type="button" class="btn btn-info btn-sm"
+                                                    data-toggle="modal" data-target="#categoryModal"
+                                                    th:data-category-id="${category.categoryId}"
+                                                    th:data-category-name="${category.categoryName}"
+                                                    th:data-description="${category.description}"
+                                                    th:data-display-order="${category.displayOrder}">
+                                                <i class="fas fa-edit"></i> 編集
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-sm delete-btn"
+                                                    th:data-category-id="${category.categoryId}">
+                                                <i class="fas fa-trash"></i> 削除
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 区分登録・編集モーダル -->
+        <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form id="categoryForm" th:action="@{/category-types/{id}/categories(id=${categoryType.categoryTypeId})}" method="post">
+                        <input type="hidden" id="categoryId" name="categoryId">
+                        <div class="modal-header">
+                            <h5 class="modal-title">区分登録・編集</h5>
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="categoryName">区分名 <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="categoryName" name="categoryName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">説明</label>
+                                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="displayOrder">表示順</label>
+                                <input type="number" class="form-control" id="displayOrder" name="displayOrder" value="0">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                            <button type="submit" class="btn btn-primary">保存</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <th:block layout:fragment="scripts">
+        <script>
+            $(function() {
+                // 行選択の処理を追加
+                $('.category-checkbox').change(function() {
+                    var tr = $(this).closest('tr');
+                    if ($(this).prop('checked')) {
+                        tr.addClass('selected');
+                    } else {
+                        tr.removeClass('selected');
+                    }
+                });
+
+                // 全選択/解除の処理を修正
+                $('#selectAll').change(function() {
+                    var isChecked = $(this).prop('checked');
+                    $('.category-checkbox').prop('checked', isChecked);
+                    if (isChecked) {
+                        $('.category-checkbox').closest('tr').addClass('selected');
+                    } else {
+                        $('.category-checkbox').closest('tr').removeClass('selected');
+                    }
+                    updateDeleteButtonState();
+                });
+
+                // 既存の処理は変更なし
+                $('.category-checkbox').change(function() {
+                    updateDeleteButtonState();
+                    var allChecked = $('.category-checkbox:checked').length === $('.category-checkbox').length;
+                    $('#selectAll').prop('checked', allChecked);
+                });
+
+                // 選択削除ボタンの状態を更新
+                function updateDeleteButtonState() {
+                    var checkedCount = $('.category-checkbox:checked').length;
+                    $('#deleteSelected').prop('disabled', checkedCount === 0);
+                }
+
+                // 選択削除ボタンのクリック処理
+                $('#deleteSelected').click(function() {
+                    if (confirm('選択した区分を削除してよろしいですか？')) {
+                        $('#bulkActionForm').submit();
+                    }
+                });
+
+                // 個別削除ボタンのクリック処理
+                $('.delete-btn').click(function() {
+                    var categoryId = $(this).data('category-id');
+                    if (confirm('この区分を削除してよろしいですか？')) {
+                        var form = $('<form>', {
+                            'method': 'post',
+                            'action': `/category-types/${categoryTypeId}/categories/${categoryId}/delete`
+                        });
+                        $(document.body).append(form);
+                        form.submit();
+                    }
+                });
+
+                // モーダルの処理（既存のコード）
+                $('#categoryModal').on('show.bs.modal', function (event) {
+                    var button = $(event.relatedTarget);
+                    var categoryId = button.data('category-id');
+                    var modal = $(this);
+                    
+                    if (categoryId) {
+                        // 編集モード
+                        modal.find('.modal-title').text('区分編集');
+                        modal.find('#categoryId').val(categoryId);
+                        modal.find('#categoryName').val(button.data('category-name'));
+                        modal.find('#description').val(button.data('description'));
+                        modal.find('#displayOrder').val(button.data('display-order'));
+                    } else {
+                        // 新規作成モード
+                        modal.find('.modal-title').text('区分新規作成');
+                        modal.find('form')[0].reset();
+                        modal.find('#categoryId').val('');
+                        modal.find('#displayOrder').val(0);
+                    }
+                });
+            });
+        </script>
+    </th:block>
+</body>
+</html> 

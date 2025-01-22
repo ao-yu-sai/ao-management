@@ -1,0 +1,34 @@
+
+.table-container {
+    height: 450px;
+    overflow-y: auto;
+}
+.table-compact td,
+.table-compact th {
+    padding: 0.5rem;
+    height: 40px;
+}
+.description-cell {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+.description-cell:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+.pagination {
+    margin-bottom: 0;
+}
+.card-footer {
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+}
+.card-header {
+    padding-bottom: 0.5rem;
+}
+.card {
+    margin-bottom: 0;
+}

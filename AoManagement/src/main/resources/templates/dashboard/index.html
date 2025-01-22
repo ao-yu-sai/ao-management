@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="jp" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/layout}">
+<head>
+    <title>ダッシュボード</title>
+    <style>
+        .small-box {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>ダッシュボード</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="content">
+            <div class="container-fluid">
+                <!-- サマリー情報 -->
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>機能マスタ</h3>
+                                <p>機能の登録・編集</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <a href="/master/functions" class="small-box-footer">
+                                詳細を見る <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>区分種別マスタ</h3>
+                                <p>区分種別の管理</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-list"></i>
+                            </div>
+                            <a href="/category-types" class="small-box-footer">
+                                詳細を見る <i class="fas fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- 必要に応じて他のボックスを追加 -->
+                </div>
+
+                <!-- メインコンテンツ -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">最近の更新</h3>
+                            </div>
+                            <div class="card-body">
+                                <!-- ここに最近の更新情報を表示 -->
+                                <p>最近の更新情報がここに表示されます。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">お知らせ</h3>
+                            </div>
+                            <div class="card-body">
+                                <!-- ここにお知らせを表示 -->
+                                <p>システムからのお知らせがここに表示されます。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html> 
