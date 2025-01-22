@@ -1,0 +1,53 @@
+/* フォーム全体のスタイル */
+.card {
+  margin-bottom: 20px;
+}
+
+/* 必須項目のマーク */
+.text-danger {
+  margin-left: 3px;
+}
+
+/* フォームグループのマージン */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+/* 説明文のスタイル */
+.form-text {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+/* エラーメッセージのスタイル */
+.alert {
+  margin-bottom: 1rem;
+}
+
+/* 入力フィールドの高さを統一 */
+.form-control {
+  height: calc(1.5em + 0.75rem + 2px);
+}
+
+/* テキストエリアの高さ */
+textarea.form-control {
+  height: auto;
+}
+
+/* ボタンのマージン */
+.btn {
+  margin-right: 0.5rem;
+}
+
+/* 無効な入力のスタイル */
+.is-invalid {
+  border-color: #dc3545;
+}
+
+/* エラーメッセージのスタイル */
+.invalid-feedback {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #dc3545;
+} 

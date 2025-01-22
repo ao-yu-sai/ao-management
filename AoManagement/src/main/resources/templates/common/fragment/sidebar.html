@@ -7,7 +7,7 @@
 <body>
   <aside th:fragment="sidebar" class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="/" class="brand-link">
+    <a th:href="@{/}" class="brand-link">
       <span class="brand-text font-weight-light">WBS管理システム</span>
     </a>
 
@@ -17,13 +17,13 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
           <li class="nav-item">
-            <a href="/" class="nav-link">
+            <a th:href="@{/}" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>ダッシュボード</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="/wbs" class="nav-link">
+            <a th:href="@{/wbs}" class="nav-link">
               <i class="nav-icon fas fa-tasks"></i>
               <p>WBS</p>
             </a>
@@ -38,7 +38,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/projects" class="nav-link">
+                <a th:href="@{/project/regist}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>案件登録</p>
                 </a>
@@ -55,19 +55,19 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/master/category" class="nav-link">
+                <a th:href="@{/master/category}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>区分マスタ</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/master/staff" class="nav-link">
+                <a th:href="@{/master/staff}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>担当者マスタ</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="/master/functions" class="nav-link">
+                <a th:href="@{/master/functions}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>機能マスタ</p>
                 </a>

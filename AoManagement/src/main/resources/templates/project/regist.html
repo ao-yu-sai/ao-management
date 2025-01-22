@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{common/layout/layout}">
+
+<head>
+  <title>案件登録</title>
+  <link rel="stylesheet" th:href="@{/css/project/regist.css}">
+</head>
+
+<body>
+  <div layout:fragment="content">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>案件登録</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/project/list">案件一覧</a></li>
+              <li class="breadcrumb-item active">案件登録</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="content">
+      <div class="container-fluid">
+        <!-- エラーメッセージ -->
+        <div class="alert alert-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">案件情報</h3>
+          </div>
+          <form id="projectForm" th:action="@{/project/regist}" method="post" th:object="${project}">
+            <div class="card-body">
+              <div class="row">
+                <!-- チケット番号と案件名を1行に -->
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-md-1 pe-0">
+                      <!-- チケット番号 -->
+                      <div class="form-group">
+                        <label for="ticketNumber">チケット番号 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="ticketNumber" name="ticketNumber" th:field="*{ticketNumber}"
+                          required maxlength="8" pattern="^[A-Za-z0-9_-]+$" style="width: 8em;">
+                      </div>
+                    </div>
+                    <div class="col-md-11 ps-2">
+                      <!-- 案件名 -->
+                      <div class="form-group">
+                        <label for="projectName">案件名 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="projectName" name="projectName" th:field="*{projectName}"
+                          required maxlength="100">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="row">
+                    <!-- サービス区分 -->
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="serviceKbnCode">サービス区分 <span class="text-danger">*</span></label>
+                        <select class="form-control" id="serviceKbnCode" name="serviceKbnCode" 
+                          th:field="*{serviceKbnCode}" required>
+                          <option th:each="category : ${serviceCategories}"
+                            th:value="${category.categoryCode}"
+                            th:text="${category.categoryName}">
+                          </option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- ステータス -->
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="status">ステータス <span class="text-danger">*</span></label>
+                        <select class="form-control" id="status" name="status" th:field="*{status}" required>
+                          <option value="未着手">未着手</option>
+                          <option value="進行中">進行中</option>
+                          <option value="完了">完了</option>
+                          <option value="保留">保留</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- 優先度 -->
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="priority">優先度 <span class="text-danger">*</span></label>
+                        <select class="form-control" id="priority" name="priority" th:field="*{priority}" required>
+                          <option value="高">高</option>
+                          <option value="中">中</option>
+                          <option value="低">低</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- 進捗率 -->
+                    <div class="col-md-3">
+                      <div class="form-group">
+                        <label for="progressRate">進捗率</label>
+                        <input type="number" class="form-control" id="progressRate" name="progressRate"
+                          th:field="*{progressRate}" min="0" max="100" value="0">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 説明 -->
+                <div class="col-12 mt-3">
+                  <div class="form-group">
+                    <label for="description">説明</label>
+                    <textarea class="form-control" id="description" name="description" th:field="*{description}"
+                      rows="3"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-footer">
+              <button type="submit" class="btn btn-primary">登録</button>
+              <a href="/project/list" class="btn btn-secondary">キャンセル</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <th:block layout:fragment="script">
+    <script th:src="@{/js/project/regist.js}"></script>
+  </th:block>
+</body>
+
+</html> 
