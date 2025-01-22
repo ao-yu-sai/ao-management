@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
-  namespace="com.ai_offshore.tools.web.wbs.category.mapper.CategoryTypeMapper">
+  namespace="com.ai_offshore.tools.web.wbs.master.category.mapper.CategoryTypeMapper">
 
   <resultMap id="CategoryTypeResultMap"
-    type="com.ai_offshore.tools.web.wbs.category.mapper.model.CategoryType">
+    type="com.ai_offshore.tools.web.wbs.master.category.mapper.model.CategoryType">
     <id property="categoryTypeCode" column="category_type_code" />
     <result property="categoryTypeName" column="category_type_name" />
     <result property="description" column="description" />

@@ -2,7 +2,7 @@ package com.ai_offshore.tools.web.wbs.master.function.mapper.model;
 
 import java.time.LocalDateTime;
 
-import com.ai_offshore.tools.web.wbs.category.mapper.model.Category;
+import com.ai_offshore.tools.web.wbs.master.category.mapper.model.Category;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,11 +1,11 @@
-package com.ai_offshore.tools.web.wbs.category.service;
+package com.ai_offshore.tools.web.wbs.master.category.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ai_offshore.tools.web.wbs.category.mapper.CategoryMapper;
-import com.ai_offshore.tools.web.wbs.category.mapper.model.Category;
+import com.ai_offshore.tools.web.wbs.master.category.mapper.CategoryMapper;
+import com.ai_offshore.tools.web.wbs.master.category.mapper.model.Category;
 
 @Service
 public class CategoryService {

@@ -1,4 +1,4 @@
-package com.ai_offshore.tools.web.wbs.category.mapper.model;
+package com.ai_offshore.tools.web.wbs.master.category.mapper.model;
 
 import lombok.Data;
 

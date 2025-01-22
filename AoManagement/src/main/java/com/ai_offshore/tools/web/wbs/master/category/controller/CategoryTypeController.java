@@ -1,4 +1,4 @@
-package com.ai_offshore.tools.web.wbs.category.controller;
+package com.ai_offshore.tools.web.wbs.master.category.controller;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ai_offshore.tools.web.wbs.category.mapper.model.Category;
-import com.ai_offshore.tools.web.wbs.category.mapper.model.CategoryType;
-import com.ai_offshore.tools.web.wbs.category.service.CategoryService;
-import com.ai_offshore.tools.web.wbs.category.service.CategoryTypeService;
+import com.ai_offshore.tools.web.wbs.master.category.mapper.model.Category;
+import com.ai_offshore.tools.web.wbs.master.category.mapper.model.CategoryType;
+import com.ai_offshore.tools.web.wbs.master.category.service.CategoryService;
+import com.ai_offshore.tools.web.wbs.master.category.service.CategoryTypeService;
 
 /**
  * 区分種別マスターのコントローラークラス

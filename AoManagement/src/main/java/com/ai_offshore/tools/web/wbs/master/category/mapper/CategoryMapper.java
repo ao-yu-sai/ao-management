@@ -1,4 +1,4 @@
-package com.ai_offshore.tools.web.wbs.category.mapper;
+package com.ai_offshore.tools.web.wbs.master.category.mapper;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
-import com.ai_offshore.tools.web.wbs.category.mapper.model.Category;
+import com.ai_offshore.tools.web.wbs.master.category.mapper.model.Category;
 
 @Mapper
 public interface CategoryMapper {

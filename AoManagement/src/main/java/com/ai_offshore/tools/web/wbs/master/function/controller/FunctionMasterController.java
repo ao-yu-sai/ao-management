@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ai_offshore.tools.web.wbs.category.service.CategoryService;
+import com.ai_offshore.tools.web.wbs.master.category.service.CategoryService;
 import com.ai_offshore.tools.web.wbs.master.function.mapper.FunctionMapper;
 import com.ai_offshore.tools.web.wbs.master.function.mapper.model.Function;
 import com.github.pagehelper.PageHelper;
