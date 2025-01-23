@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{common/layout/layout}">
+
+<head>
+  <title>タスク一覧</title>
+  <link rel="stylesheet" th:href="@{/css/task_manage/list.css}">
+</head>
+
+<body>
+  <div layout:fragment="content">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>タスク一覧</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+              <li class="breadcrumb-item active">タスク一覧</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- タスク一覧 -->
+          <div class="col-md-5">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">案件一覧</h3>
+                <div class="card-tools">
+                  <form class="form-inline mr-2 d-inline-block">
+                    <div class="input-group input-group-sm">
+                      <input type="text" name="keyword" class="form-control" 
+                        placeholder="検索..." th:value="${keyword}">
+                      <div class="input-group-append">
+                        <button class="btn btn-default" type="submit">
+                          <i class="fas fa-search"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-compact">
+                    <thead>
+                      <tr>
+                        <th>チケット</th>
+                        <th>案件名</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="task : ${tasks}" th:data-service-kbn-code="${task.serviceKbnCode}">
+                        <td th:text="${task.ticketNumber}"></td>
+                        <td th:text="${task.projectName}"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 機能一覧 -->
+          <div class="col-md-7">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">機能一覧</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-primary btn-sm" id="addFunctionBtn">
+                    <i class="fas fa-plus"></i> 機能追加
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover table-compact">
+                    <thead>
+                      <tr>
+                        <th>機能名</th>
+                      </tr>
+                    </thead>
+                    <tbody id="functionList">
+                      <!-- 機能一覧はJavaScriptで動的に表示 -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- チケット詳細モーダル -->
+    <div class="modal fade" id="ticketDetailModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">チケット詳細</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>チケット番号</label>
+                  <p id="modalTicketNumber" class="form-control-static"></p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>案件名</label>
+                  <p id="modalProjectName" class="form-control-static"></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>ステータス</label>
+                  <p id="modalStatus" class="form-control-static"></p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>優先度</label>
+                  <p id="modalPriority" class="form-control-static"></p>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>説明</label>
+              <div id="modalDescription" class="form-control-static"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 機能選択モーダル -->
+    <div class="modal fade" id="functionSelectModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">機能選択</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- 検索フィルター -->
+            <div class="form-group">
+              <input type="text" class="form-control" id="functionFilter" 
+                placeholder="機能名で検索...">
+            </div>
+            
+            <!-- 機能一覧テーブル -->
+            <div class="function-select-container">
+              <div class="function-select-header">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="selectAllFunctions">
+                  <label class="custom-control-label" for="selectAllFunctions"></label>
+                </div>
+                <div class="function-name-header">機能名</div>
+              </div>
+              <div class="function-select-body" id="availableFunctionList">
+                <!-- 利用可能な機能一覧はJavaScriptで動的に表示 -->
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+            <button type="button" class="btn btn-primary" id="saveFunctionsBtn">追加</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <th:block layout:fragment="script">
+    <script th:src="@{/js/task_manage/list.js}"></script>
+  </th:block>
+</body>
+
+</html> 

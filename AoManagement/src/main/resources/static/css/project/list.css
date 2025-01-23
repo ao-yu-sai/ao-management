@@ -17,6 +17,30 @@
   text-align: center;
   line-height: 20px;
   font-size: 12px;
+  display: none;  /* デフォルトで非表示 */
+  justify-content: center;  /* 水平方向の中央揃え */
+  align-items: center;      /* 垂直方向の中央揃え */
+}
+
+/* 進捗率が0より大きい場合のみ表示 */
+.progress-bar[style*="width: 0%"] {
+  display: none;
+}
+
+.progress-bar[style*="width: 0"] {
+  display: none;
+}
+
+.progress-bar:not([style*="width: 0"]) {
+  display: flex;
+  justify-content: center;  /* flexboxでの中央揃えを確実に */
+}
+
+/* プログレスバーの文字位置を調整 */
+.progress-bar span {
+  position: absolute;
+  width: 100%;
+  text-align: center;
 }
 
 /* バッジのスタイル */

@@ -96,8 +96,11 @@
                       <div class="progress">
                         <div class="progress-bar" role="progressbar"
                           th:style="'width: ' + ${project.progressRate ?: 0} + '%'"
-                          th:text="${project.progressRate ?: 0} + '%'">
+                          >
+                          <span th:text="${project.progressRate != null and project.progressRate > 0 ? project.progressRate + '%' : '0%'}"></span>
                         </div>
+                        <div th:if="${project.progressRate == null or project.progressRate == 0}"
+                          class="text-center w-100" style="line-height: 20px;">0%</div>
                       </div>
                     </td>
                     <td>

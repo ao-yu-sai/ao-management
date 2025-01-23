@@ -1,0 +1,139 @@
+/* テーブルのスタイル */
+.table {
+  margin-bottom: 0;
+}
+
+/* 検索フォームのスタイル */
+.form-inline {
+  margin-right: 1rem;
+}
+
+.input-group {
+  width: 200px;
+}
+
+/* タスク一覧の列幅設定 */
+.table th:nth-child(1),
+.table td:nth-child(1) {
+  width: 15%;
+}
+
+/* 機能選択モーダルのスタイル */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
+}
+
+/* スクロールバーのスタイル */
+.table-responsive::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* 機能選択コンテナ */
+.function-select-container {
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+}
+
+/* ヘッダー部分 */
+.function-select-header {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* チェックボックスの基本スタイル */
+.function-select-header .custom-control {
+  position: relative;
+  min-width: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.function-select-header .custom-control-label {
+  position: relative;
+  margin-bottom: 0;
+  vertical-align: top;
+}
+
+.function-select-header .custom-control-label::before,
+.function-select-header .custom-control-label::after {
+  position: absolute;
+  top: 0.25rem;
+  left: -1.5rem;
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  content: "";
+}
+
+.function-name-header {
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+/* ボディ部分 */
+.function-select-body {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* 機能アイテム */
+.function-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.function-item:last-child {
+  border-bottom: none;
+}
+
+.function-item:hover {
+  background-color: #f8f9fa;
+}
+
+.function-item .custom-control {
+  position: relative;
+  min-width: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.function-item .custom-control-label {
+  position: relative;
+  margin-bottom: 0;
+  vertical-align: top;
+}
+
+.function-item .custom-control-label::before,
+.function-item .custom-control-label::after {
+  position: absolute;
+  top: 0.25rem;
+  left: -1.5rem;
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  content: "";
+}
+
+.function-item .function-name {
+  margin-left: 8px;
+} 
