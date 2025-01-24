@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import com.ai_offshore.tools.wbs.web.wbs.common.model.RedmineIssue;
+import com.ai_offshore.tools.wbs.web.common.model.RedmineIssue;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

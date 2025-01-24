@@ -36,8 +36,14 @@ spring:
     prefix: file:src/main/resources/templates/
     encoding: UTF-8
 
+  security:
+    logout:
+      success-url: /login?logout
+
 mybatis:
-  mapper-locations: classpath:com/ai_offshore/tools/web/**/mapper/*.xml
+  mapper-locations:
+    - classpath:com/ai_offshore/tools/wbs/web/**/mapper/*.xml
+    - classpath:com/ai_offshore/tools/wbs/web/**/**/mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -47,6 +53,7 @@ mybatis:
     lazy-loading-enabled: true
     aggressive-lazy-loading: false
     local-cache-scope: statement
+    type-handlers-package: org.apache.ibatis.type
   type-aliases-package: com.ai_offshore.tools.wbs.web.model
 
 pagehelper:
@@ -80,3 +87,4 @@ logging:
 # ログ設定
     org.springframework.web.client.RestTemplate: DEBUG
     org.mybatis: DEBUG
+    org.springframework.security: DEBUG

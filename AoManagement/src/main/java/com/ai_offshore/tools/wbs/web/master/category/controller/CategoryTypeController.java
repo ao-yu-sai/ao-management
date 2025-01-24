@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ai_offshore.tools.wbs.web.wbs.master.category.mapper.model.Category;
-import com.ai_offshore.tools.wbs.web.wbs.master.category.mapper.model.CategoryType;
-import com.ai_offshore.tools.wbs.web.wbs.master.category.service.CategoryService;
-import com.ai_offshore.tools.wbs.web.wbs.master.category.service.CategoryTypeService;
+import com.ai_offshore.tools.wbs.web.master.category.mapper.model.Category;
+import com.ai_offshore.tools.wbs.web.master.category.mapper.model.CategoryType;
+import com.ai_offshore.tools.wbs.web.master.category.service.CategoryService;
+import com.ai_offshore.tools.wbs.web.master.category.service.CategoryTypeService;
 
 /**
  * 区分種別マスターのコントローラークラス

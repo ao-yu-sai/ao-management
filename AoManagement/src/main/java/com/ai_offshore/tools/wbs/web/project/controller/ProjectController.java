@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ai_offshore.tools.wbs.web.common.helper.RedmineHelper;
+import com.ai_offshore.tools.wbs.web.common.model.RedmineIssue;
+import com.ai_offshore.tools.wbs.web.master.category.mapper.model.Category;
+import com.ai_offshore.tools.wbs.web.master.category.service.CategoryService;
 import com.ai_offshore.tools.wbs.web.project.mapper.model.Project;
 import com.ai_offshore.tools.wbs.web.project.service.ProjectService;
-import com.ai_offshore.tools.wbs.web.wbs.common.model.RedmineIssue;
-import com.ai_offshore.tools.wbs.web.wbs.master.category.mapper.model.Category;
-import com.ai_offshore.tools.wbs.web.wbs.master.category.service.CategoryService;
 
 /**
  * 案件管理のコントローラークラス
