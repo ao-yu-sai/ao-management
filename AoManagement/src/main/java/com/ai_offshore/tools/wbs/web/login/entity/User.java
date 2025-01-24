@@ -1,9 +1,9 @@
 package com.ai_offshore.tools.wbs.web.login.entity;
 
-import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.ArrayList;
+
+import lombok.Data;
 
 @Data
 public class User {

@@ -136,4 +136,10 @@
 
 .function-item .function-name {
   margin-left: 8px;
+}
+
+#taskInfoTable {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
 } 

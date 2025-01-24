@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ai_offshore.tools.wbs.web.master.category.mapper.model.Category;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.TaskManageMapper;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunction;
+import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunctionTaskInfo;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.TaskManage;
 
 @Service
@@ -54,5 +56,21 @@ public class TaskManageService {
         for (String functionCode : functionCodes) {
             taskMapper.insertProjectFunction(ticketNumber, serviceKbnCode, functionCode);
         }
+    }
+
+    /**
+     * 案件機能別タスク情報を取得
+     */
+    public List<ProjectFunctionTaskInfo> findProjectFunctionTaskInfo(String serviceKbnCode, String ticketNumber, String functionCode) {
+        return taskMapper.selectProjectFunctionTaskInfo(serviceKbnCode, ticketNumber, functionCode);
+    }
+
+    @Transactional
+    public void addTask(ProjectFunctionTaskInfo taskInfo) {
+        taskMapper.insertTask(taskInfo);
+    }
+
+    public List<Category> findTaskCategories() {
+        return taskMapper.selectTaskCategories();
     }
 } 

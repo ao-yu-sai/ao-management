@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     // チケット番号クリック時の処理
     $('.table tbody tr td:first-child').on('click', function(e) {
         e.stopPropagation();  // 親要素のクリックイベントを停止
@@ -45,6 +46,7 @@ $(document).ready(function() {
             functions.forEach(function(func) {
                 tbody.append(
                     $('<tr>')
+                        .data('function-code', func.functionCode)
                         .append($('<td>').text(func.functionName))
                 );
             });
@@ -181,4 +183,108 @@ $(document).ready(function() {
             toastr.error('機能一覧の取得に失敗しました');
         });
     }
+
+    // 機能行クリック時の処理
+    $('#functionList').on('click', 'tr', function() {
+        const selectedRow = $('.table tbody tr.table-active');
+        const serviceKbnCode = selectedRow.data('service-kbn-code');
+        const ticketNumber = selectedRow.find('td:first').text();
+        const functionCode = $(this).data('function-code');
+
+        // 案件機能別タスク情報を取得
+        $.get('/task-manage/function-task-info', {
+            serviceKbnCode: serviceKbnCode,
+            ticketNumber: ticketNumber,
+            functionCode: functionCode
+        })
+        .done(function(taskInfoList) {
+            // 取得したデータを表示
+            const tbody = $('#taskInfoTable tbody');
+            tbody.empty(); // 既存の行をクリア
+
+            taskInfoList.forEach(function(taskInfo) {
+                const row = $('<tr>');
+                row.data('task-kbn-code', taskInfo.taskKbnCode);
+                row.append($('<td>').text(taskInfo.taskKbnCode));
+                row.append($('<td>').text(taskInfo.personInCharge));
+                row.append($('<td>').text(taskInfo.plannedStartDate));
+                row.append($('<td>').text(taskInfo.plannedEndDate));
+                row.append($('<td>').text(taskInfo.plannedManHours));
+                tbody.append(row);
+            });
+        })
+        .fail(function(xhr) {
+            console.error('Error fetching project function task info:', xhr);
+            toastr.error('案件機能別タスク情報の取得に失敗しました');
+        });
+    });
+
+    // タスク追加ボタンクリック時の処理
+    $('#addTaskBtn').on('click', function() {
+        // タスク区分を取得
+        $.get('/task-manage/task-categories')
+        .done(function(categories) {
+            const categoryList = $('#taskCategoryList');
+            categoryList.empty();
+
+            categories.forEach(function(category) {
+                const checkbox = $('<div>').addClass('form-check');
+                checkbox.append(
+                    $('<input>').addClass('form-check-input')
+                        .attr('type', 'checkbox')
+                        .attr('id', 'taskCategory_' + category.categoryCode)
+                        .attr('value', category.categoryCode)
+                );
+                checkbox.append(
+                    $('<label>').addClass('form-check-label')
+                        .attr('for', 'taskCategory_' + category.categoryCode)
+                        .text(category.categoryName)
+                );
+                categoryList.append(checkbox);
+            });
+
+            $('#addTaskModal').modal('show');
+        })
+        .fail(function(xhr) {
+            console.error('Error fetching task categories:', xhr);
+            toastr.error('タスク区分の取得に失敗しました');
+        });
+    });
+
+    // タスク追加フォームの送信処理
+    $('#addTaskForm').on('submit', function(event) {
+        event.preventDefault();
+
+        const selectedCategories = [];
+        $('#taskCategoryList input:checked').each(function() {
+            selectedCategories.push($(this).val());
+        });
+
+        const taskData = {
+            serviceKbnCode: $('.table tbody tr.table-active').data('service-kbn-code'),
+            ticketNumber: $('.table tbody tr.table-active').find('td:first').text(),
+            functionCode: $('#functionList tr.table-active').data('function-code'),
+            taskKbnCodes: selectedCategories,
+            personInCharge: $('#personInCharge').val(),
+            plannedStartDate: $('#plannedStartDate').val(),
+            plannedEndDate: $('#plannedEndDate').val(),
+            plannedManHours: $('#plannedManHours').val()
+        };
+
+        $.ajax({
+            url: '/task-manage/tasks/add',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(taskData)
+        })
+        .done(function() {
+            toastr.success('タスクを追加しました');
+            $('#addTaskModal').modal('hide');
+            // タスク情報を再読み込み
+        })
+        .fail(function(xhr) {
+            console.error('Error adding task:', xhr);
+            toastr.error('タスクの追加に失敗しました');
+        });
+    });
 });

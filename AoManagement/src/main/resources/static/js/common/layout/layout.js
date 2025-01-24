@@ -1,5 +1,13 @@
 // メニューの状態を管理するスクリプト
 $(document).ready(function() {
+  var csrfToken = $("meta[name='_csrf']").attr("content");
+  var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+  $.ajaxSetup({
+      beforeSend: function(xhr) {
+          xhr.setRequestHeader(csrfHeader, csrfToken);
+      }
+  });
   // アクティブなメニューを展開
   $('.nav-link.active').parents('.nav-treeview').show();
   $('.nav-link.active').parents('.nav-item').addClass('menu-open');
@@ -37,4 +45,7 @@ $(document).ready(function() {
       }
     });
   }
+
+  // サイドメニューをデフォルトで最小化
+  $('body').addClass('sidebar-collapse');
 });

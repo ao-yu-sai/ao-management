@@ -1,10 +1,13 @@
 package com.ai_offshore.tools.wbs.web.task_manage.mapper;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.ai_offshore.tools.wbs.web.master.category.mapper.model.Category;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunction;
+import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunctionTaskInfo;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.TaskManage;
 
 @Mapper
@@ -45,4 +48,17 @@ public interface TaskManageMapper {
         @Param("serviceKbnCode") String serviceKbnCode,
         @Param("functionCode") String functionCode
     );
+
+    /**
+     * 案件機能別タスク情報を取得
+     */
+    List<ProjectFunctionTaskInfo> selectProjectFunctionTaskInfo(
+        @Param("serviceKbnCode") String serviceKbnCode,
+        @Param("ticketNumber") String ticketNumber,
+        @Param("functionCode") String functionCode
+    );
+
+    void insertTask(ProjectFunctionTaskInfo taskInfo);
+
+    List<Category> selectTaskCategories();
 } 

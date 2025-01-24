@@ -7,6 +7,10 @@
   <link rel="icon" href="data:,">
   <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">WBS管理システム</title>
 
+  <!-- CSRFトークンを含むメタタグを追加 -->
+  <meta th:name="_csrf" th:content="${_csrf.token}"/>
+  <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -23,7 +27,7 @@
   <th:block layout:fragment="style"></th:block>
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
   <div class="wrapper">
     <!-- ヘッダー -->
     <div th:replace="~{common/fragment/header :: header}"></div>
@@ -36,7 +40,7 @@
         <nav>
           <ul>
             <li>
-              <a href="/logout" title="ログアウト">
+              <a th:href="@{/logout}" title="ログアウト">
                 <i class="fas fa-sign-out-alt"></i>
               </a>
             </li>

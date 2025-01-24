@@ -16,7 +16,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/webjars/**", "/plugins/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**",
+                                "/adminlte/**", "/plugins/**")
+                        .permitAll()
                 .requestMatchers("/master/**").hasRole("ADMIN")  // マスタ管理は管理者のみ
                 .anyRequest().authenticated()
             )

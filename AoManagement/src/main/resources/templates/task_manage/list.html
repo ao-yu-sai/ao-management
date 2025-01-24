@@ -28,8 +28,8 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <!-- タスク一覧 -->
-          <div class="col-md-5">
+          <!-- 案件一覧 -->
+          <div class="col-md-4">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">案件一覧</h3>
@@ -69,7 +69,7 @@
           </div>
           
           <!-- 機能一覧 -->
-          <div class="col-md-7">
+          <div class="col-md-3">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">機能一覧</h3>
@@ -89,6 +89,38 @@
                     </thead>
                     <tbody id="functionList">
                       <!-- 機能一覧はJavaScriptで動的に表示 -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- タスク情報 -->
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">タスク情報</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-primary btn-sm" id="addTaskBtn">
+                    <i class="fas fa-plus"></i> タスク追加
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table id="taskInfoTable" class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>タスク</th>
+                        <th>担当者</th>
+                        <th>開始予定日</th>
+                        <th>終了予定日</th>
+                        <th>予定工数</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- タスク情報はJavaScriptで動的に追加 -->
                     </tbody>
                   </table>
                 </div>
@@ -185,11 +217,62 @@
         </div>
       </div>
     </div>
+
+    <!-- タスク追加モーダル -->
+    <div class="modal fade" id="addTaskModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">タスク追加</h5>
+            <button type="button" class="close" data-dismiss="modal">
+              <span>&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="addTaskForm">
+              <div class="form-group">
+                <label>タスク区分</label>
+                <div id="taskCategoryList">
+                  <!-- タスク区分はJavaScriptで動的に追加 -->
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="personInCharge">担当者</label>
+                <input type="text" class="form-control" id="personInCharge" name="personInCharge" required>
+              </div>
+              <div class="form-group">
+                <label for="plannedStartDate">開始予定日</label>
+                <input type="date" class="form-control" id="plannedStartDate" name="plannedStartDate" required>
+              </div>
+              <div class="form-group">
+                <label for="plannedEndDate">終了予定日</label>
+                <input type="date" class="form-control" id="plannedEndDate" name="plannedEndDate" required>
+              </div>
+              <div class="form-group">
+                <label for="plannedManHours">予定工数</label>
+                <input type="number" class="form-control" id="plannedManHours" name="plannedManHours" required>
+              </div>
+              <button type="submit" class="btn btn-primary">追加</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <th:block layout:fragment="script">
     <script th:src="@{/js/task_manage/list.js}"></script>
   </th:block>
+
+  <form th:action="@{/task-manage/functions/add}" method="post">
+    <!-- CSRFトークンを追加 -->
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    
+    <!-- 他のフォームフィールド -->
+    <!-- 例: <input type="text" name="exampleField" /> -->
+    
+    <button type="submit">送信</button>
+  </form>
 </body>
 
 </html> 

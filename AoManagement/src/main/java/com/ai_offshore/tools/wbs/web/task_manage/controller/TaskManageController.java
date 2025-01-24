@@ -1,5 +1,7 @@
 package com.ai_offshore.tools.wbs.web.task_manage.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ai_offshore.tools.wbs.web.master.category.mapper.model.Category;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunction;
+import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunctionTaskInfo;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.TaskManage;
 import com.ai_offshore.tools.wbs.web.task_manage.service.TaskManageService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/task-manage")
@@ -79,6 +81,36 @@ public class TaskManageController {
             request.getServiceKbnCode(),
             request.getFunctionCodes()
         );
+    }
+
+    /**
+     * 案件機能別タスク情報を取得
+     */
+    @GetMapping("/function-task-info")
+    @ResponseBody
+    public List<ProjectFunctionTaskInfo> getProjectFunctionTaskInfo(
+        @RequestParam String serviceKbnCode,
+        @RequestParam String ticketNumber,
+        @RequestParam String functionCode) {
+        return taskService.findProjectFunctionTaskInfo(serviceKbnCode, ticketNumber, functionCode);
+    }
+
+    /**
+     * タスクを追加
+     */
+    @PostMapping("/tasks/add")
+    @ResponseBody
+    public void addTask(@RequestBody ProjectFunctionTaskInfo taskInfo) {
+        taskService.addTask(taskInfo);
+    }
+
+    /**
+     * タスク区分を取得
+     */
+    @GetMapping("/task-categories")
+    @ResponseBody
+    public List<Category> getTaskCategories() {
+        return taskService.findTaskCategories();
     }
 }
 
