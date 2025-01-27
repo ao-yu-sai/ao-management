@@ -1,0 +1,94 @@
+.task-table-container {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.task-table th,
+.task-table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.task-table th {
+    background-color: #f5f5f5;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 46px;  /* 機能一覧のヘッダーと同じ高さに設定 */
+    padding: 0.5rem 1rem;
+}
+
+.card-tools {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* 右寄せにするために追加 */
+}
+
+.card-title {
+    margin-bottom: 0; /* デフォルトのマージンを削除 */
+}
+
+.form-inline {
+    margin-right: 0 !important; /* mr-2クラスを上書き */
+}
+
+.input-group-sm {
+    margin: 0;
+}
+
+/* テーブル行のホバー時のカーソルスタイル */
+.table-hover tbody tr,
+#functionList tr {
+    cursor: pointer;
+}
+
+/* タスク選択コンテナのスタイル */
+.task-select-container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.task-select-header {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+}
+
+.task-name-header {
+    margin-left: 8px;
+    font-weight: bold;
+}
+
+.task-select-body {
+    padding: 8px;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+}
+
+.task-name {
+    margin-left: 8px;
+}
+
+/* 既存の機能選択スタイルと同様 */
+.task-info-form {
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+} 

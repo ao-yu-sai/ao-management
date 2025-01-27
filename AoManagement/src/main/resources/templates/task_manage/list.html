@@ -5,6 +5,7 @@
 <head>
   <title>タスク一覧</title>
   <link rel="stylesheet" th:href="@{/css/task_manage/list.css}">
+  <link rel="stylesheet" th:href="@{/css/task_manage/style.css}">
 </head>
 
 <body>
@@ -97,7 +98,7 @@
           </div>
 
           <!-- タスク情報 -->
-          <div class="col-md-4">
+          <div class="col-md-5">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">タスク情報</h3>
@@ -108,15 +109,15 @@
                 </div>
               </div>
               <div class="card-body">
-                <div class="table-responsive">
-                  <table id="taskInfoTable" class="table table-bordered">
+                <div class="task-table-container">
+                  <table class="task-table">
                     <thead>
                       <tr>
-                        <th>タスク</th>
-                        <th>担当者</th>
-                        <th>開始予定日</th>
-                        <th>終了予定日</th>
-                        <th>予定工数</th>
+                        <th style="width:40%">タスク</th>
+                        <th style="width:15%">担当者</th>
+                        <th style="width:15%">開始予定日</th>
+                        <th style="width:15%">終了予定日</th>
+                        <th style="width:15%">予定工数</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -220,43 +221,41 @@
 
     <!-- タスク追加モーダル -->
     <div class="modal fade" id="addTaskModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">タスク追加</h5>
-            <button type="button" class="close" data-dismiss="modal">
-              <span>&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="addTaskForm">
-              <div class="form-group">
-                <label>タスク区分</label>
-                <div id="taskCategoryList">
-                  <!-- タスク区分はJavaScriptで動的に追加 -->
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">タスク追加</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="personInCharge">担当者</label>
-                <input type="text" class="form-control" id="personInCharge" name="personInCharge" required>
-              </div>
-              <div class="form-group">
-                <label for="plannedStartDate">開始予定日</label>
-                <input type="date" class="form-control" id="plannedStartDate" name="plannedStartDate" required>
-              </div>
-              <div class="form-group">
-                <label for="plannedEndDate">終了予定日</label>
-                <input type="date" class="form-control" id="plannedEndDate" name="plannedEndDate" required>
-              </div>
-              <div class="form-group">
-                <label for="plannedManHours">予定工数</label>
-                <input type="number" class="form-control" id="plannedManHours" name="plannedManHours" required>
-              </div>
-              <button type="submit" class="btn btn-primary">追加</button>
-            </form>
-          </div>
+                <div class="modal-body">
+                    <!-- 検索フィルター -->
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="taskFilter" 
+                            placeholder="タスク区分で検索...">
+                    </div>
+                    
+                    <!-- タスク区分一覧 -->
+                    <div class="task-select-container">
+                        <div class="task-select-header">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="selectAllTasks">
+                                <label class="custom-control-label" for="selectAllTasks"></label>
+                            </div>
+                            <div class="task-name-header">タスク区分</div>
+                        </div>
+                        <div class="task-select-body" id="availableTaskList">
+                            <!-- タスク区分一覧はJavaScriptで動的に表示 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-primary" id="saveTaskBtn">追加</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
   </div>
 

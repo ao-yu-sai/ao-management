@@ -61,7 +61,7 @@ $(document).ready(function() {
     $('#addFunctionBtn').on('click', function() {
         const selectedRow = $('.table tbody tr.table-active');
         if (!selectedRow.length) {
-            toastr.warning('案件を選択してください');
+            toastr.error('案件を選択してください');
             return;
         }
 
@@ -98,7 +98,7 @@ $(document).ready(function() {
         }).get();
         
         if (!selectedFunctions.length) {
-            toastr.warning('機能を選択してください');
+            toastr.error('機能を選択してください');
             return;
         }
         
@@ -130,6 +130,7 @@ $(document).ready(function() {
                 functions.forEach(function(func) {
                     tbody.append(
                         $('<tr>')
+                            .data('function-code', func.functionCode)
                             .append($('<td>').text(func.functionName))
                     );
                 });
@@ -186,6 +187,10 @@ $(document).ready(function() {
 
     // 機能行クリック時の処理
     $('#functionList').on('click', 'tr', function() {
+        // 選択行のハイライト処理を追加
+        $('#functionList tr').removeClass('table-active');
+        $(this).addClass('table-active');
+
         const selectedRow = $('.table tbody tr.table-active');
         const serviceKbnCode = selectedRow.data('service-kbn-code');
         const ticketNumber = selectedRow.find('td:first').text();
@@ -219,56 +224,105 @@ $(document).ready(function() {
         });
     });
 
-    // タスク追加ボタンクリック時の処理
+    // タスク追加ボタンのクリックイベント
     $('#addTaskBtn').on('click', function() {
+        // 案件が選択されているか確認
+        const selectedTicketNumber = getSelectedTicketNumber();
+        if (!selectedTicketNumber) {
+            toastr.error('案件を選択してください');
+            return;
+        }
+
+        // 機能が選択されているか確認
+        const selectedFunctionCode = getSelectedFunctionCode();
+        if (!selectedFunctionCode) {
+            toastr.error('機能を選択してください');
+            return;
+        }
+
         // タスク区分を取得
+        loadTaskCategories();
+        
+        // モーダルを表示
+        $('#addTaskModal').modal('show');
+    });
+
+    // 選択された案件番号を取得する関数
+    function getSelectedTicketNumber() {
+        const selectedRow = $('.table tbody tr.table-active');
+        return selectedRow.length ? selectedRow.find('td:first').text() : null;
+    }
+
+    // 選択された機能コードを取得する関数
+    function getSelectedFunctionCode() {
+        const selectedFunction = $('#functionList tr.table-active');
+        return selectedFunction.length ? selectedFunction.data('function-code') : null;
+    }
+
+    // タスク区分を読み込む関数
+    function loadTaskCategories() {
         $.get('/task-manage/task-categories')
         .done(function(categories) {
-            const categoryList = $('#taskCategoryList');
-            categoryList.empty();
-
+            const taskList = $('#availableTaskList');
+            taskList.empty();
+            
             categories.forEach(function(category) {
-                const checkbox = $('<div>').addClass('form-check');
-                checkbox.append(
-                    $('<input>').addClass('form-check-input')
-                        .attr('type', 'checkbox')
-                        .attr('id', 'taskCategory_' + category.categoryCode)
-                        .attr('value', category.categoryCode)
+                taskList.append(
+                    $('<div>').addClass('task-item')
+                        .append(
+                            $('<div>').addClass('custom-control custom-checkbox')
+                                .append($('<input>')
+                                    .addClass('custom-control-input')
+                                    .attr({
+                                        type: 'checkbox',
+                                        id: 'task_' + category.categoryCode,
+                                        value: category.categoryCode
+                                    }))
+                                .append($('<label>')
+                                    .addClass('custom-control-label')
+                                    .attr('for', 'task_' + category.categoryCode))
+                        )
+                        .append($('<div>').addClass('task-name').text(category.categoryName))
                 );
-                checkbox.append(
-                    $('<label>').addClass('form-check-label')
-                        .attr('for', 'taskCategory_' + category.categoryCode)
-                        .text(category.categoryName)
-                );
-                categoryList.append(checkbox);
             });
-
-            $('#addTaskModal').modal('show');
         })
         .fail(function(xhr) {
             console.error('Error fetching task categories:', xhr);
             toastr.error('タスク区分の取得に失敗しました');
         });
+    }
+
+    // タスク検索フィルター
+    $('#taskFilter').on('input', function() {
+        const keyword = $(this).val().toLowerCase();
+        $('.task-item').each(function() {
+            const taskName = $(this).find('.task-name').text().toLowerCase();
+            $(this).toggle(taskName.includes(keyword));
+        });
     });
 
-    // タスク追加フォームの送信処理
-    $('#addTaskForm').on('submit', function(event) {
-        event.preventDefault();
+    // 全選択/解除の処理
+    $('#selectAllTasks').on('change', function() {
+        const isChecked = $(this).prop('checked');
+        $('#availableTaskList input[type="checkbox"]').prop('checked', isChecked);
+    });
 
-        const selectedCategories = [];
-        $('#taskCategoryList input:checked').each(function() {
-            selectedCategories.push($(this).val());
-        });
+    // タスク追加処理
+    $('#saveTaskBtn').on('click', function() {
+        const selectedCategories = $('#availableTaskList input:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        if (!selectedCategories.length) {
+            toastr.error('タスク区分を選択してください');
+            return;
+        }
 
         const taskData = {
             serviceKbnCode: $('.table tbody tr.table-active').data('service-kbn-code'),
             ticketNumber: $('.table tbody tr.table-active').find('td:first').text(),
             functionCode: $('#functionList tr.table-active').data('function-code'),
-            taskKbnCodes: selectedCategories,
-            personInCharge: $('#personInCharge').val(),
-            plannedStartDate: $('#plannedStartDate').val(),
-            plannedEndDate: $('#plannedEndDate').val(),
-            plannedManHours: $('#plannedManHours').val()
+            taskKbnCodes: selectedCategories
         };
 
         $.ajax({
@@ -281,6 +335,7 @@ $(document).ready(function() {
             toastr.success('タスクを追加しました');
             $('#addTaskModal').modal('hide');
             // タスク情報を再読み込み
+            loadTaskInfo();
         })
         .fail(function(xhr) {
             console.error('Error adding task:', xhr);
