@@ -16,6 +16,7 @@ import com.ai_offshore.tools.wbs.web.master.category.mapper.model.Category;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunction;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunctionTaskInfo;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.TaskManage;
+import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.PersonInCharge;
 import com.ai_offshore.tools.wbs.web.task_manage.service.TaskManageService;
 
 @Controller
@@ -116,6 +117,15 @@ public class TaskManageController {
     @ResponseBody
     public List<Category> getTaskCategories() {
         return taskService.findTaskCategories();
+    }
+
+    /**
+     * 担当者一覧を取得
+     */
+    @GetMapping("/persons")
+    @ResponseBody
+    public List<PersonInCharge> getPersonInChargeList() {
+        return taskService.findPersonInChargeList();
     }
 }
 

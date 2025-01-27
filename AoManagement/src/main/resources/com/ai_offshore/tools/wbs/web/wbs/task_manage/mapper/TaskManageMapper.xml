@@ -142,7 +142,7 @@
             #{ticketNumber},
             #{functionCode},
             #{taskKbnCode},
-            'dummy@dummy.com'
+            #{personInCharge}
         )
     </insert>
 
@@ -154,6 +154,19 @@
             category
         WHERE
             category_type_code = 'TASK_KBN'
+    </select>
+
+    <!-- 担当者一覧を取得 -->
+    <select id="selectPersonInChargeList" resultType="com.ai_offshore.tools.wbs.web.task_manage.mapper.model.PersonInCharge">
+        SELECT
+            user_id as userId,
+            user_name as userName
+        FROM
+            user_info
+        WHERE
+            is_active = true
+        ORDER BY
+            user_name
     </select>
 
 </mapper> 

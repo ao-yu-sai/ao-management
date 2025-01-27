@@ -56,6 +56,7 @@
     border-radius: 4px;
     max-height: 300px;
     overflow-y: auto;
+    position: relative;
 }
 
 .task-select-header {
@@ -66,6 +67,19 @@
     border-bottom: 1px solid #ddd;
     position: sticky;
     top: 0;
+    z-index: 1000;
+}
+
+/* チェックボックスコンテナの幅を統一 */
+.task-select-header .custom-control,
+.task-item .custom-control {
+    min-width: 24px; /* チェックボックスの幅を固定 */
+    margin: 0; /* マージンをリセット */
+}
+
+/* チェックボックスの位置を調整 */
+.custom-control-input {
+    margin-top: 0;
 }
 
 .task-name-header {
@@ -75,6 +89,8 @@
 
 .task-select-body {
     padding: 8px;
+    position: relative;
+    z-index: 1;
 }
 
 .task-item {

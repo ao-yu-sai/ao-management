@@ -9,6 +9,7 @@ import com.ai_offshore.tools.wbs.web.master.category.mapper.model.Category;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunction;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunctionTaskInfo;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.TaskManage;
+import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.PersonInCharge;
 
 @Mapper
 public interface TaskManageMapper {
@@ -61,4 +62,9 @@ public interface TaskManageMapper {
     void insertTask(ProjectFunctionTaskInfo taskInfo);
 
     List<Category> selectTaskCategories();
+
+    /**
+     * 担当者一覧を取得
+     */
+    List<PersonInCharge> selectPersonInChargeList();
 } 

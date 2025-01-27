@@ -10,6 +10,7 @@ import com.ai_offshore.tools.wbs.web.task_manage.mapper.TaskManageMapper;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunction;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunctionTaskInfo;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.TaskManage;
+import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.PersonInCharge;
 
 @Service
 public class TaskManageService {
@@ -79,5 +80,12 @@ public class TaskManageService {
 
     public List<Category> findTaskCategories() {
         return taskMapper.selectTaskCategories();
+    }
+
+    /**
+     * 担当者一覧を取得
+     */
+    public List<PersonInCharge> findPersonInChargeList() {
+        return taskMapper.selectPersonInChargeList();
     }
 } 
