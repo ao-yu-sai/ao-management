@@ -101,28 +101,33 @@
 
     <!-- 案件機能別タスク情報を取得 -->
     <select id="selectProjectFunctionTaskInfo" resultType="com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunctionTaskInfo">
-        SELECT
-            project_function_task_id,
-            service_kbn_code,
-            ticket_number,
-            function_code,
-            task_kbn_code,
-            person_in_charge,
-            planned_start_date,
-            planned_end_date,
-            planned_man_hours,
-            actual_start_date,
-            actual_end_date,
-            actual_man_hours,
-            progress_rate,
-            created_at,
-            updated_at
-        FROM
-            project_function_task_info
-        WHERE
-            service_kbn_code = #{serviceKbnCode}
-            AND ticket_number = #{ticketNumber}
-            AND function_code = #{functionCode}
+
+        SELECT 
+            t.ticket_number,
+            t.service_kbn_code,
+            t.function_code,
+            t.task_kbn_code,
+            c.category_name as taskName,
+            t.person_in_charge,
+            t.planned_start_date,
+            t.planned_end_date,
+            t.planned_man_hours,
+            t.actual_start_date,
+            t.actual_end_date,
+            t.actual_man_hours,
+            t.progress_rate,
+            t.created_at,
+            t.updated_at
+        FROM 
+            project_function_task_info t
+            LEFT JOIN category c ON c.category_type_code = 'TASK_KBN' 
+                AND t.task_kbn_code = c.category_code
+        WHERE 
+            t.ticket_number = #{ticketNumber}
+            AND t.function_code = #{functionCode}
+            AND t.service_kbn_code = #{serviceKbnCode}
+        ORDER BY 
+            t.task_kbn_code
     </select>
 
     <insert id="insertTask">
@@ -131,19 +136,13 @@
             ticket_number,
             function_code,
             task_kbn_code,
-            person_in_charge,
-            planned_start_date,
-            planned_end_date,
-            planned_man_hours
+            person_in_charge
         ) VALUES (
             #{serviceKbnCode},
             #{ticketNumber},
             #{functionCode},
             #{taskKbnCode},
-            #{personInCharge},
-            #{plannedStartDate},
-            #{plannedEndDate},
-            #{plannedManHours}
+            'dummy@dummy.com'
         )
     </insert>
 

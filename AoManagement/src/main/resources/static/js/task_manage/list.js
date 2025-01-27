@@ -24,7 +24,7 @@ $(document).ready(function() {
         });
     });
 
-    // タスク行クリック時の処理
+    // 案件行クリック時の処理
     $('.table tbody tr').on('click', function() {
         const ticketNumber = $(this).find('td:first').text();
         const serviceKbnCode = $(this).data('service-kbn-code');
@@ -193,7 +193,7 @@ $(document).ready(function() {
 
         const selectedRow = $('.table tbody tr.table-active');
         const serviceKbnCode = selectedRow.data('service-kbn-code');
-        const ticketNumber = selectedRow.find('td:first').text();
+        const ticketNumber = selectedRow.data('ticket-number');;
         const functionCode = $(this).data('function-code');
 
         // 案件機能別タスク情報を取得
@@ -209,8 +209,9 @@ $(document).ready(function() {
 
             taskInfoList.forEach(function(taskInfo) {
                 const row = $('<tr>');
+                row.data('project-function-task-id', taskInfo.projectFunctionTaskId);
                 row.data('task-kbn-code', taskInfo.taskKbnCode);
-                row.append($('<td>').text(taskInfo.taskKbnCode));
+                row.append($('<td>').text(taskInfo.taskName));
                 row.append($('<td>').text(taskInfo.personInCharge));
                 row.append($('<td>').text(taskInfo.plannedStartDate));
                 row.append($('<td>').text(taskInfo.plannedEndDate));
@@ -318,10 +319,16 @@ $(document).ready(function() {
             return;
         }
 
+        const selectedRow = $('.table tbody tr.table-active');
+        const ticketNumber = selectedRow.data('ticket-number');
+        const serviceKbnCode = selectedRow.data('service-kbn-code');
+        const selectedFunction = $('#functionList tr.table-active');
+        const functionCode = selectedFunction.data('function-code');
+
         const taskData = {
-            serviceKbnCode: $('.table tbody tr.table-active').data('service-kbn-code'),
-            ticketNumber: $('.table tbody tr.table-active').find('td:first').text(),
-            functionCode: $('#functionList tr.table-active').data('function-code'),
+            serviceKbnCode: serviceKbnCode,
+            ticketNumber: ticketNumber,
+            functionCode: functionCode,
             taskKbnCodes: selectedCategories
         };
 
@@ -334,8 +341,34 @@ $(document).ready(function() {
         .done(function() {
             toastr.success('タスクを追加しました');
             $('#addTaskModal').modal('hide');
+            
             // タスク情報を再読み込み
-            loadTaskInfo();
+            $.get('/task-manage/function-task-info', {
+                serviceKbnCode: serviceKbnCode,
+                ticketNumber: ticketNumber,
+                functionCode: functionCode
+            })
+            .done(function(taskInfoList) {
+                // 取得したデータを表示
+                const tbody = $('#taskInfoTable tbody');
+                tbody.empty(); // 既存の行をクリア
+
+                taskInfoList.forEach(function(taskInfo) {
+                    const row = $('<tr>');
+                    row.data('task-kbn-code', taskInfo.taskKbnCode);
+                    row.data('project-function-task-id', taskInfo.projectFunctionTaskId);
+                    row.append($('<td>').text(taskInfo.taskName));
+                    row.append($('<td>').text(taskInfo.personInCharge));
+                    row.append($('<td>').text(taskInfo.plannedStartDate));
+                    row.append($('<td>').text(taskInfo.plannedEndDate));
+                    row.append($('<td>').text(taskInfo.plannedManHours));
+                    tbody.append(row);
+                });
+            })
+            .fail(function(xhr) {
+                console.error('Error fetching project function task info:', xhr);
+                toastr.error('案件機能別タスク情報の取得に失敗しました');
+            });
         })
         .fail(function(xhr) {
             console.error('Error adding task:', xhr);

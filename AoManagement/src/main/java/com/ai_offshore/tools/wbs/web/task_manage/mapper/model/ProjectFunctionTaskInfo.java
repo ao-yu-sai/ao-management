@@ -1,7 +1,9 @@
 package com.ai_offshore.tools.wbs.web.task_manage.mapper.model;
 
-import lombok.Data;
 import java.util.Date;
+import java.util.List;
+
+import lombok.Data;
 
 @Data
 public class ProjectFunctionTaskInfo {
@@ -9,7 +11,9 @@ public class ProjectFunctionTaskInfo {
     private String serviceKbnCode;
     private String ticketNumber;
     private String functionCode;
+    private List<String> taskKbnCodes;
     private String taskKbnCode;
+    private String taskName;
     private String personInCharge;
     private Date plannedStartDate;
     private Date plannedEndDate;

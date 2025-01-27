@@ -96,12 +96,17 @@ public class TaskManageController {
     }
 
     /**
-     * タスクを追加
+     * タスク追加リクエスト
      */
     @PostMapping("/tasks/add")
     @ResponseBody
-    public void addTask(@RequestBody ProjectFunctionTaskInfo taskInfo) {
-        taskService.addTask(taskInfo);
+    public void addTask(@RequestBody AddTaskRequest request) {
+        taskService.addTasks(
+            request.getTicketNumber(),
+            request.getServiceKbnCode(),
+            request.getFunctionCode(),
+            request.getTaskKbnCodes()
+        );
     }
 
     /**
@@ -129,4 +134,24 @@ class AddFunctionsRequest {
     public void setServiceKbnCode(String serviceKbnCode) { this.serviceKbnCode = serviceKbnCode; }
     public List<String> getFunctionCodes() { return functionCodes; }
     public void setFunctionCodes(List<String> functionCodes) { this.functionCodes = functionCodes; }
+}
+
+/**
+ * タスク追加リクエスト
+ */
+class AddTaskRequest {
+    private String ticketNumber;
+    private String serviceKbnCode;
+    private String functionCode;
+    private List<String> taskKbnCodes;
+    
+    // Getters and Setters
+    public String getTicketNumber() { return ticketNumber; }
+    public void setTicketNumber(String ticketNumber) { this.ticketNumber = ticketNumber; }
+    public String getServiceKbnCode() { return serviceKbnCode; }
+    public void setServiceKbnCode(String serviceKbnCode) { this.serviceKbnCode = serviceKbnCode; }
+    public String getFunctionCode() { return functionCode; }
+    public void setFunctionCode(String functionCode) { this.functionCode = functionCode; }
+    public List<String> getTaskKbnCodes() { return taskKbnCodes; }
+    public void setTaskKbnCodes(List<String> taskKbnCodes) { this.taskKbnCodes = taskKbnCodes; }
 } 

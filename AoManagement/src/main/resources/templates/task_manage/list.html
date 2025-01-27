@@ -58,7 +58,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr th:each="task : ${tasks}" th:data-service-kbn-code="${task.serviceKbnCode}">
+                      <tr th:each="task : ${tasks}" th:data-service-kbn-code="${task.serviceKbnCode}"
+                      th:data-ticket-number="${task.ticketNumber}">
                         <td th:text="${task.ticketNumber}"></td>
                         <td th:text="${task.projectName}"></td>
                       </tr>
@@ -110,7 +111,7 @@
               </div>
               <div class="card-body">
                 <div class="task-table-container">
-                  <table class="task-table">
+                  <table class="task-table" id="taskInfoTable">
                     <thead>
                       <tr>
                         <th style="width:40%">タスク</th>

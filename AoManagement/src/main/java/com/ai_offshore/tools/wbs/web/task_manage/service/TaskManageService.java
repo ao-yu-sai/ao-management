@@ -66,8 +66,15 @@ public class TaskManageService {
     }
 
     @Transactional
-    public void addTask(ProjectFunctionTaskInfo taskInfo) {
-        taskMapper.insertTask(taskInfo);
+    public void addTasks(String ticketNumber, String serviceKbnCode, String functionCode, List<String> taskKbnCodes) {
+        for (String taskKbnCode : taskKbnCodes) {
+            ProjectFunctionTaskInfo taskInfo = new ProjectFunctionTaskInfo();
+            taskInfo.setTicketNumber(ticketNumber);
+            taskInfo.setServiceKbnCode(serviceKbnCode);
+            taskInfo.setFunctionCode(functionCode);
+            taskInfo.setTaskKbnCode(taskKbnCode);
+            taskMapper.insertTask(taskInfo);
+        }
     }
 
     public List<Category> findTaskCategories() {
