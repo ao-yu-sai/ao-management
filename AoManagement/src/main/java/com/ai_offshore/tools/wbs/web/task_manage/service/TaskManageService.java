@@ -88,4 +88,12 @@ public class TaskManageService {
     public List<PersonInCharge> findPersonInChargeList() {
         return taskMapper.selectPersonInChargeList();
     }
+
+    /**
+     * タスクの担当者を更新
+     */
+    @Transactional
+    public void updateTaskPersonInCharge(int projectFunctionTaskId, String personInCharge) {
+        taskMapper.updateTaskPersonInCharge(projectFunctionTaskId, personInCharge);
+    }
 } 

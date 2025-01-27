@@ -127,6 +127,15 @@ public class TaskManageController {
     public List<PersonInCharge> getPersonInChargeList() {
         return taskService.findPersonInChargeList();
     }
+
+    /**
+     * タスクの担当者を更新
+     */
+    @PostMapping("/tasks/update-person")
+    @ResponseBody
+    public void updateTaskPersonInCharge(@RequestBody UpdatePersonInChargeRequest request) {
+        taskService.updateTaskPersonInCharge(request.getProjectFunctionTaskId(), request.getPersonInCharge());
+    }
 }
 
 /**
@@ -164,4 +173,15 @@ class AddTaskRequest {
     public void setFunctionCode(String functionCode) { this.functionCode = functionCode; }
     public List<String> getTaskKbnCodes() { return taskKbnCodes; }
     public void setTaskKbnCodes(List<String> taskKbnCodes) { this.taskKbnCodes = taskKbnCodes; }
+}
+
+class UpdatePersonInChargeRequest {
+    private int projectFunctionTaskId;
+    private String personInCharge;
+    
+    // Getters and Setters
+    public int getProjectFunctionTaskId() { return projectFunctionTaskId; }
+    public void setProjectFunctionTaskId(int projectFunctionTaskId) { this.projectFunctionTaskId = projectFunctionTaskId; }
+    public String getPersonInCharge() { return personInCharge; }
+    public void setPersonInCharge(String personInCharge) { this.personInCharge = personInCharge; }
 } 

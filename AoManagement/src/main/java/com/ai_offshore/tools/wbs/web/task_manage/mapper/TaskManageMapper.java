@@ -67,4 +67,12 @@ public interface TaskManageMapper {
      * 担当者一覧を取得
      */
     List<PersonInCharge> selectPersonInChargeList();
+
+    /**
+     * タスクの担当者を更新
+     */
+    void updateTaskPersonInCharge(
+        @Param("projectFunctionTaskId") int projectFunctionTaskId,
+        @Param("personInCharge") String personInCharge
+    );
 } 
