@@ -75,4 +75,14 @@ public interface TaskManageMapper {
         @Param("projectFunctionTaskId") int projectFunctionTaskId,
         @Param("personInCharge") String personInCharge
     );
+
+    /**
+     * タスクの計画情報を更新
+     */
+    void updateTaskPlan(
+        @Param("projectFunctionTaskId") int projectFunctionTaskId,
+        @Param("plannedStartDate") String plannedStartDate,
+        @Param("plannedEndDate") String plannedEndDate,
+        @Param("plannedManHours") Double plannedManHours
+    );
 } 

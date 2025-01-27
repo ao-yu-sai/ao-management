@@ -136,6 +136,20 @@ public class TaskManageController {
     public void updateTaskPersonInCharge(@RequestBody UpdatePersonInChargeRequest request) {
         taskService.updateTaskPersonInCharge(request.getProjectFunctionTaskId(), request.getPersonInCharge());
     }
+
+    /**
+     * タスクの計画情報を更新
+     */
+    @PostMapping("/tasks/update-plan")
+    @ResponseBody
+    public void updateTaskPlan(@RequestBody UpdateTaskPlanRequest request) {
+        taskService.updateTaskPlan(
+            request.getProjectFunctionTaskId(),
+            request.getPlannedStartDate(),
+            request.getPlannedEndDate(),
+            request.getPlannedManHours()
+        );
+    }
 }
 
 /**
@@ -184,4 +198,21 @@ class UpdatePersonInChargeRequest {
     public void setProjectFunctionTaskId(int projectFunctionTaskId) { this.projectFunctionTaskId = projectFunctionTaskId; }
     public String getPersonInCharge() { return personInCharge; }
     public void setPersonInCharge(String personInCharge) { this.personInCharge = personInCharge; }
+}
+
+class UpdateTaskPlanRequest {
+    private int projectFunctionTaskId;
+    private String plannedStartDate;
+    private String plannedEndDate;
+    private Double plannedManHours;
+    
+    // Getters and Setters
+    public int getProjectFunctionTaskId() { return projectFunctionTaskId; }
+    public void setProjectFunctionTaskId(int projectFunctionTaskId) { this.projectFunctionTaskId = projectFunctionTaskId; }
+    public String getPlannedStartDate() { return plannedStartDate; }
+    public void setPlannedStartDate(String plannedStartDate) { this.plannedStartDate = plannedStartDate; }
+    public String getPlannedEndDate() { return plannedEndDate; }
+    public void setPlannedEndDate(String plannedEndDate) { this.plannedEndDate = plannedEndDate; }
+    public Double getPlannedManHours() { return plannedManHours; }
+    public void setPlannedManHours(Double plannedManHours) { this.plannedManHours = plannedManHours; }
 } 

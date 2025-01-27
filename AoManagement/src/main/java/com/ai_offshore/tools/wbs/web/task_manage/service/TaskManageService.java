@@ -96,4 +96,12 @@ public class TaskManageService {
     public void updateTaskPersonInCharge(int projectFunctionTaskId, String personInCharge) {
         taskMapper.updateTaskPersonInCharge(projectFunctionTaskId, personInCharge);
     }
+
+    /**
+     * タスクの計画情報を更新
+     */
+    @Transactional
+    public void updateTaskPlan(int projectFunctionTaskId, String plannedStartDate, String plannedEndDate, Double plannedManHours) {
+        taskMapper.updateTaskPlan(projectFunctionTaskId, plannedStartDate, plannedEndDate, plannedManHours);
+    }
 } 

@@ -204,70 +204,131 @@ $(document).ready(function() {
         })
         .done(function(taskInfoList) {
             // 取得したデータを表示
-            const tbody = $('#taskInfoTable tbody');
-            tbody.empty(); // 既存の行をクリア
-
-            taskInfoList.forEach(function(taskInfo) {
-                const row = $('<tr>');
-                row.data('project-function-task-id', taskInfo.projectFunctionTaskId);
-                row.data('task-kbn-code', taskInfo.taskKbnCode);
-                row.append($('<td>').text(taskInfo.taskName));
-
-                // 担当者セルを作成
-                const personCell = $('<td>');
-                const personSelect = $('<select>').addClass('form-control form-control-sm');
-                
-                // 未選択オプションを追加
-                personSelect.append($('<option>').val('').text('選択してください'));
-                
-                // 担当者一覧をオプションとして追加
-                personInChargeList.forEach(function(person) {
-                    const option = $('<option>')
-                        .val(person.userId)
-                        .text(person.userName);
-                    if (person.userId === taskInfo.personInCharge) {
-                        option.prop('selected', true);
-                    }
-                    personSelect.append(option);
-                });
-                
-                // 担当者変更時の処理
-                personSelect.on('change', function() {
-                    const newPersonInCharge = $(this).val();
-                    const projectFunctionTaskId = row.data('project-function-task-id');
-                    
-                    $.ajax({
-                        url: '/task-manage/tasks/update-person',
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify({
-                            projectFunctionTaskId: projectFunctionTaskId,
-                            personInCharge: newPersonInCharge
-                        })
-                    })
-                    .done(function() {
-                        toastr.success('担当者を更新しました');
-                    })
-                    .fail(function(xhr) {
-                        console.error('Error updating person in charge:', xhr);
-                        toastr.error('担当者の更新に失敗しました');
-                    });
-                });
-                
-                personCell.append(personSelect);
-                row.append(personCell);
-
-                row.append($('<td>').text(taskInfo.plannedStartDate));
-                row.append($('<td>').text(taskInfo.plannedEndDate));
-                row.append($('<td>').text(taskInfo.plannedManHours));
-                tbody.append(row);
-            });
+            displayTaskInfo(taskInfoList);
         })
         .fail(function(xhr) {
             console.error('Error fetching project function task info:', xhr);
             toastr.error('案件機能別タスク情報の取得に失敗しました');
         });
     });
+
+    // 担当者セルを作成する関数
+    function createPersonInChargeCell(taskInfo) {
+        const personCell = $('<td>');
+        const personSelect = $('<select>').addClass('form-control form-control-sm');
+        
+        // 未選択オプションを追加
+        personSelect.append($('<option>').val('').text('選択してください'));
+        
+        // 担当者一覧をオプションとして追加
+        personInChargeList.forEach(function(person) {
+            const option = $('<option>')
+                .val(person.userId)
+                .text(person.userName);
+            if (person.userId === taskInfo.personInCharge) {
+                option.prop('selected', true);
+            }
+            personSelect.append(option);
+        });
+        
+        // 担当者変更時の処理
+        personSelect.on('change', function() {
+            const newPersonInCharge = $(this).val();
+            const projectFunctionTaskId = taskInfo.projectFunctionTaskId;
+            
+            $.ajax({
+                url: '/task-manage/tasks/update-person',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    projectFunctionTaskId: projectFunctionTaskId,
+                    personInCharge: newPersonInCharge
+                })
+            })
+            .done(function() {
+                toastr.success('担当者を更新しました');
+            })
+            .fail(function(xhr) {
+                console.error('Error updating person in charge:', xhr);
+                toastr.error('担当者の更新に失敗しました');
+            });
+        });
+        
+        personCell.append(personSelect);
+        return personCell;
+    }
+
+    function displayTaskInfo(taskInfoList) {
+        const tbody = $('#taskInfoTable tbody');
+        tbody.empty();
+
+        taskInfoList.forEach(function(taskInfo) {
+            const row = $('<tr>');
+            row.data('project-function-task-id', taskInfo.projectFunctionTaskId);
+            row.data('task-kbn-code', taskInfo.taskKbnCode);
+            row.append($('<td>').text(taskInfo.taskName));
+            
+            // 担当者セル
+            const personCell = createPersonInChargeCell(taskInfo);
+            row.append(personCell);
+            
+            // 開始予定日
+            const startDateInput = $('<input>')
+                .addClass('form-control form-control-sm')
+                .attr('type', 'date')
+                .val(taskInfo.plannedStartDate)
+                .on('change', function() {
+                    updateTaskPlan(taskInfo.projectFunctionTaskId, $(this).val(), null, null);
+                });
+            row.append($('<td>').append(startDateInput));
+            
+            // 終了予定日
+            const endDateInput = $('<input>')
+                .addClass('form-control form-control-sm')
+                .attr('type', 'date')
+                .val(taskInfo.plannedEndDate)
+                .on('change', function() {
+                    updateTaskPlan(taskInfo.projectFunctionTaskId, null, $(this).val(), null);
+                });
+            row.append($('<td>').append(endDateInput));
+            
+            // 予定工数
+            const manHoursInput = $('<input>')
+                .addClass('form-control form-control-sm')
+                .attr('type', 'number')
+                .attr('step', '0.5')
+                .attr('min', '0')
+                .val(taskInfo.plannedManHours)
+                .on('change', function() {
+                    updateTaskPlan(taskInfo.projectFunctionTaskId, null, null, $(this).val());
+                });
+            row.append($('<td>').append(manHoursInput));
+            
+            tbody.append(row);
+        });
+    }
+
+    // タスクの計画情報を更新する関数
+    function updateTaskPlan(projectFunctionTaskId, startDate, endDate, manHours) {
+        $.ajax({
+            url: '/task-manage/tasks/update-plan',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                projectFunctionTaskId: projectFunctionTaskId,
+                plannedStartDate: startDate,
+                plannedEndDate: endDate,
+                plannedManHours: manHours ? parseFloat(manHours) : null
+            })
+        })
+        .done(function() {
+            toastr.success('タスク情報を更新しました');
+        })
+        .fail(function(xhr) {
+            console.error('Error updating task plan:', xhr);
+            toastr.error('タスク情報の更新に失敗しました');
+        });
+    }
 
     // タスク追加ボタンのクリックイベント
     $('#addTaskBtn').on('click', function() {
@@ -394,20 +455,7 @@ $(document).ready(function() {
             })
             .done(function(taskInfoList) {
                 // 取得したデータを表示
-                const tbody = $('#taskInfoTable tbody');
-                tbody.empty(); // 既存の行をクリア
-
-                taskInfoList.forEach(function(taskInfo) {
-                    const row = $('<tr>');
-                    row.data('task-kbn-code', taskInfo.taskKbnCode);
-                    row.data('project-function-task-id', taskInfo.projectFunctionTaskId);
-                    row.append($('<td>').text(taskInfo.taskName));
-                    row.append($('<td>').text(taskInfo.personInCharge));
-                    row.append($('<td>').text(taskInfo.plannedStartDate));
-                    row.append($('<td>').text(taskInfo.plannedEndDate));
-                    row.append($('<td>').text(taskInfo.plannedManHours));
-                    tbody.append(row);
-                });
+                displayTaskInfo(taskInfoList);
             })
             .fail(function(xhr) {
                 console.error('Error fetching project function task info:', xhr);

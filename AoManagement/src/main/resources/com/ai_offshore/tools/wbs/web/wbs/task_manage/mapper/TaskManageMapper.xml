@@ -180,4 +180,16 @@
             project_function_task_id = #{projectFunctionTaskId}
     </update>
 
+    <!-- タスクの計画情報を更新 -->
+    <update id="updateTaskPlan">
+        UPDATE project_function_task_info
+        SET
+            planned_start_date = #{plannedStartDate}::date,
+            planned_end_date = #{plannedEndDate}::date,
+            planned_man_hours = #{plannedManHours},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE
+            project_function_task_id = #{projectFunctionTaskId}
+    </update>
+
 </mapper> 
