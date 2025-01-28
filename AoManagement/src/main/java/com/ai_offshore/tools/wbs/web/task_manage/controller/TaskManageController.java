@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai_offshore.tools.wbs.web.master.category.mapper.model.Category;
+import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.PersonInCharge;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunction;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.ProjectFunctionTaskInfo;
 import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.TaskManage;
-import com.ai_offshore.tools.wbs.web.task_manage.mapper.model.PersonInCharge;
 import com.ai_offshore.tools.wbs.web.task_manage.service.TaskManageService;
 
 @Controller
@@ -93,7 +93,10 @@ public class TaskManageController {
         @RequestParam String serviceKbnCode,
         @RequestParam String ticketNumber,
         @RequestParam String functionCode) {
-        return taskService.findProjectFunctionTaskInfo(serviceKbnCode, ticketNumber, functionCode);
+        List<ProjectFunctionTaskInfo> taskInfoList = taskService
+                .findProjectFunctionTaskInfo(serviceKbnCode, ticketNumber,
+                        functionCode);
+        return taskInfoList;
     }
 
     /**

@@ -184,9 +184,15 @@
     <update id="updateTaskPlan">
         UPDATE project_function_task_info
         SET
+        <if test="plannedStartDate != null and plannedStartDate != ''">
             planned_start_date = #{plannedStartDate}::date,
+        </if>
+        <if test="plannedEndDate != null and plannedEndDate != ''">
             planned_end_date = #{plannedEndDate}::date,
+        </if>
+        <if test="plannedManHours != null and plannedManHours != ''">
             planned_man_hours = #{plannedManHours},
+        </if>
             updated_at = CURRENT_TIMESTAMP
         WHERE
             project_function_task_id = #{projectFunctionTaskId}

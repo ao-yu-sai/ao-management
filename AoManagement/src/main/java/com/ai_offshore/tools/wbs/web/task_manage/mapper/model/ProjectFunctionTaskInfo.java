@@ -15,11 +15,11 @@ public class ProjectFunctionTaskInfo {
     private String taskKbnCode;
     private String taskName;
     private String personInCharge;
-    private Date plannedStartDate;
-    private Date plannedEndDate;
+    private String plannedStartDate;
+    private String plannedEndDate;
     private double plannedManHours;
-    private Date actualStartDate;
-    private Date actualEndDate;
+    private String actualStartDate;
+    private String actualEndDate;
     private double actualManHours;
     private int progressRate;
     private Date createdAt;

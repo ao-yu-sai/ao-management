@@ -202,7 +202,7 @@ $(document).ready(function() {
             ticketNumber: ticketNumber,
             functionCode: functionCode
         })
-        .done(function(taskInfoList) {
+        .done(function(taskInfoList, textStatus, jqXHR) {
             // 取得したデータを表示
             displayTaskInfo(taskInfoList);
         })

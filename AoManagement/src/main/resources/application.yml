@@ -2,7 +2,7 @@ server:
   port: 8888
 spring:
   datasource:
-    url: jdbc:postgresql://bo01-indev-exin-rds-cluster.cluster-cbxjniv8bv00.ap-northeast-1.rds.amazonaws.com:5432/wbs_db?currentSchema=public
+    url: jdbc:postgresql://bo01-indev-exin-rds-cluster.cluster-cbxjniv8bv00.ap-northeast-1.rds.amazonaws.com:5432/wbs_db?currentSchema=public&options=-c%20timezone=Asia/Tokyo
     username: postgres
     password: aodevrdspassword
     driver-class-name: org.postgresql.Driver
